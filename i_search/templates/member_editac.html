@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/5e2cac8506.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+    {% block head %}
+    <title></title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background: #f2f2f2;
+        }
+    
+        .wrapper {
+            min-height: 100%;
+            margin-bottom: -50px;
+        }
+    
+        .content {
+            padding-bottom: 50px;
+        }
+    
+        .footer {
+            height: 60px;
+            background-color: #495057;
+            ;
+        }
+    
+        .text-muted {
+            color: #f2efeaa3 !important;
+        }
+    
+        /* .container {
+            max-width: 50%;
+        } */
+    
+        .header-container {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            grid-gap: 20px;
+            align-items: center;
+        }
+    
+        .table-striped>tbody>tr:nth-of-type(odd) {
+            --bs-table-accent-bg: rgb(122 122 122 / 5%);
+            color: #6b6b6b;
+        }
+    
+        .table>:not(caption)>*>* {
+            padding: 0.5rem 0.3rem;
+            background-color: var(--bs-table-bg);
+            border-bottom-width: 1px;
+            box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+        }
+        
+        .img-fluid {
+            max-width: 200px !important;
+            max-height: 50px !important;
+        }
+
+        #menu {
+            display: none;
+        }
+
+        #menu:checked~ul {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(1rem);
+            transition: 0.3s;
+        }
+        @media (max-width: 960px) {
+            .container{
+                width:90%
+            }
+        }
+        @media (min-width: 960px) {
+            .container{
+                width:50%
+            }
+        }
+        
+        .dropdown {
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #444;
+            text-align: center;
+            line-height: 50px;
+        }
+
+        .dropdown-menu {
+            font-weight: 400;
+            background-color: #ffffff;
+            border: 1px solid rgb(255 255 255 / 15%);
+            min-width: 6.2rem;
+            box-shadow: 0px 10px 50px rgb(206 193 180 / 60%);
+        }
+
+        .dropdown-item:focus,
+        .dropdown-item:hover {
+            font-weight: 500;
+            color: #3882bb;
+            background-color: #e9ecef5c;
+        }
+
+    </style>
+    {% endblock %}
+</head>
+
+<body>
+    {% block body %}
+    <div class="container">
+        <div class="header-container mt-4 mb-3">
+            <h5 class=" fw-bold fs-5">修改帳號</h5>
+            <div class="extra-buttons text-right">
+                <button id="reset-sort" class="btn btn-sm btn-ligth" style="display: none;">
+                    <span class="fas fa-sync fa-sm mr-2"></span>Reset sort order </button>
+            </div>
+        </div>
+    </div>
+    <main class="mx-3 my-3">
+        <section class="container shadow-sm p-3 mb-5 bg-body rounded">
+            <div class="scrollbar w-100" id="style-1">
+                <div class="row g-2">
+                    <div class="col-6">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="email" class="form-control" placeholder="帳號" v-model="dataForm.account" disabled>
+                            <label>帳號</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating mb-3 mx-1">
+                            <select class="form-control" v-model="dataForm.role">
+                                <option :value="2">主管</option>
+                                <option :value="3">專員</option>
+                            </select>
+                            <label for="floatingInput">權限</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-2">
+                    <div class="col-md">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="password" class="form-control" placeholder="密碼" v-model="dataForm.password">
+                            <label>密碼</label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="password" class="form-control" placeholder="確認密碼" v-model="dataForm.password2">
+                            <label>確認密碼</label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="email" class="form-control" placeholder="使用分機" v-model="dataForm.sip_ext">
+                            <label>使用分機</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-2">
+                    <div class="col-md">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="email" class="form-control" placeholder="呼叫中心系統帳號" v-model="dataForm.sip_id">
+                            <label>呼叫中心系統帳號</label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="password" class="form-control" placeholder="呼叫中心系統密碼" v-model="dataForm.sip_pwd">
+                            <label>呼叫中心系統密碼</label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row g-2">
+                    <div class="col-md">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="email" class="form-control" placeholder="名稱" v-model="dataForm.name">
+                            <label>名稱</label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="email" class="form-control" placeholder="電話" v-model="dataForm.phone">
+                            <label>電話</label>
+                        </div>
+                    </div>
+                    <div class="d-flex bd-highlight mb-3">
+                        <div class="me-auto p-2 bd-highlight">
+                            <button type="button" class="btn btn-primary" @click="editAccount()"style="background: #277bbc;">修改</button>
+                        </div>
+                        <div class="p-2 bd-highlight">
+                            <button type="button" class="btn btn-danger" @click="delAccount()">刪除帳號</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    {% endblock %}
+
+    {% block script %}
+    <script>
+        const baseapp = Vue.createApp({
+            delimiters: ['((', '))'],
+            data() {
+                return {
+                    dataForm:{
+                        account: "",
+                        role: 3,
+                        password: "",
+                        password2: "",
+                        sip_ext: "",
+                        sip_id: "",
+                        sip_pwd: "",
+                        name: "",
+                        phone: "",
+                    }
+                }
+            },
+            methods: {
+                logout(){
+                    new HTTPreq("/i_search/logout/", "fd").geta().then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        if(res.status == "OK"){
+                            window.location.href = "/";
+                        }
+                    });
+                },
+                getAccount(auto = true){
+                    if(!this.dataForm.account?.length) {
+                        Swal.fire("請輸入帳號", "", "error");
+                        return;
+                    }
+                    var T = this;
+                    new HTTPreq("/users/get_user_info/", "fd").posta({account: this.dataForm.account}).then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        if(res.status == "OK"){
+                            for(var i in res.data) T.dataForm[i] = res.data[i];
+                        }
+                        if(!auto) Swal.fire(res.msg, "", "error");
+                    });
+                },
+                editAccount(){
+                    var T = this;
+                    this.dataForm.delete = false;
+                    new HTTPreq("/users/modify_user/", "fd").posta(this.dataForm).then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        Swal.fire(res.msg, "", "success");
+                    });
+                },
+                delAccount(){
+                    var T = this;
+                    this.dataForm.delete = true;
+                    Swal.fire({
+                        icon: "warning",
+                        title: "確認刪除？",
+                        text: "此操作無法復原",
+                        showConfirmButton: false,
+                        showCancelButton: true,
+                        cancelButtonText: "取消",
+                        showDenyButton: true,
+                        denyButtonText: "刪除",
+                    }).then((r)=>{
+                        if(r.isDenied){
+                            T.dataForm.delete = true;
+                            new HTTPreq("/users/modify_user/", "fd").posta(T.dataForm).then(rcv => {
+                                var res = supfnc.toJSON(rcv.result);
+                                Swal.fire(res.msg).then(()=>{
+                                    if(rcv.status === 200) window.location.href = "/i_search/member_aclist/";
+                                });
+                            });
+                        }
+                    });
+                },
+                showImg(src){
+                    Swal.fire({
+                        imageUrl: src,
+                        imageWidth: 500,
+                        imageHeight: 500,
+                        imageAlt: 'logo'
+                    })
+                }
+            },
+            mounted(){
+                this.dataForm.account = supfnc.getHrefArg().account || "";
+                this.getAccount();
+            },
+            created(){},
+            updated(){},
+            beforeUpdate(){},
+        });
+    </script>
+    {% endblock %}
+</body>
+
+</html>

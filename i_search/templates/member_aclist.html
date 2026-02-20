@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/5e2cac8506.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <link href="/static/css/style.css" rel="stylesheet">
+    {% block head %}
+    <title></title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background: #f2f2f2
+        }
+
+        .wrapper {
+            min-height: 100%;
+            margin-bottom: -50px;
+        }
+
+        .content {
+            padding-bottom: 50px;
+        }
+
+        .footer {
+            height: 60px;
+            background-color: #495057;
+            ;
+        }
+
+        .text-muted {
+            color: #f2efeaa3 !important;
+        }
+
+        .container {
+            max-width: 98%;
+        }
+
+        .header-container {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            grid-gap: 20px;
+            align-items: center;
+        }
+
+        .table-striped>tbody>tr:nth-of-type(odd) {
+            --bs-table-accent-bg: rgb(122 122 122 / 5%);
+            color: #6b6b6b;
+        }
+
+        .table>:not(caption)>*>* {
+            padding: 1rem 0.3rem;
+            background-color: var(--bs-table-bg);
+            border-bottom-width: 1px;
+            box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+        }
+
+        tr td {
+            color: rgb(49, 49, 49);
+        }
+
+        .tableli td:nth-child(3) {
+            color: #0d6efd;
+        }
+
+        .img-fluid {
+            max-width: 200px !important;
+            max-height: 50px !important;
+        }
+
+        .dropdown {
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #444;
+            text-align: center;
+            line-height: 50px;
+        }
+
+        .dropdown-menu {
+            font-weight: 400;
+            background-color: #ffffff;
+            border: 1px solid rgb(255 255 255 / 15%);
+            min-width: 6.2rem;
+            box-shadow: 0px 10px 50px rgb(206 193 180 / 60%);
+        }
+
+        .dropdown-item:focus,
+        .dropdown-item:hover {
+            font-weight: 500;
+            color: #3882bb;
+            background-color: #e9ecef5c;
+        }
+
+        #menu {
+            display: none;
+        }
+
+        #menu:checked~ul {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(1rem);
+            transition: 0.3s;
+        }
+
+
+        .button {
+            height: 25px;
+            border: none;
+            outline: none;
+            border-radius: 3px;
+            font-size: 15px;
+            text-align: center;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+
+        .hover-btn {
+            background-color: rgb(39, 123, 188)
+        }
+
+        .hover-btn span {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+    </style>
+    {% endblock %}
+</head>
+
+
+<body>
+    {% block body %}
+    <div class="container-fluid">
+        <div class="mx-3 my-3">
+            <div class="header-container mt-4 mb-3 my-3">
+                <h5 class=" fw-bold fs-5">帳號管理</h5>
+                <div class="extra-buttons text-right">
+                    <button id="reset-sort" class="btn btn-sm btn-ligth" style="display: none;">
+                    <span class="fas fa-sync fa-sm mr-2"></span>Reset sort order </button>
+                </div>
+                <div class="relative text-right">
+                    <a href="/i_search/member_newac/"><button type="button" class="btn btn-primary">新增</button></a>
+                </div>
+            </div>
+        </div>
+        <main class="mx-3 my-3">
+            <section class="p-4 shadow-sm bg-body rounded" style="background:white;">
+                <div class="scrollbar w-100" id="style-1">
+                    <table class="table table-striped overflow-scroll overflow:scroll">
+                        <thead>
+                            <tr>
+                                <th class="fw-bold text-center" v-for="title in titleOrder">(( titleTrans.getV(title, title) ))</th>
+                                <th scope="col" class="text-center">動作 </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="tableli text-center" v-for="(row, rowIdx) in dataBox">
+                                <td v-for="title in titleOrder">(( row.getV(title, '--') ))</td>
+                                <th>
+                                    <a :href="'/i_search/member_editac?account=' + row.account"><button class="button hover-btn"><span>編輯</span></button></a>
+                                </th>
+                            </tr>
+                            <tr class="tableli text-center" v-if="!dataBox.length">
+                                <td :colspan="titleOrder.length + 2" class="text-center">無資料</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    {% endblock %}
+
+    {% block script %}
+    <script>
+        const baseapp = Vue.createApp({
+            delimiters: ['((', '))'],
+            data() {
+                return {
+                    titleOrder: ["sip_ext", "name", "account", "phone", "role"],
+                    titleTrans: {
+                        sip_ext: "分機",
+                        name: "名稱",
+                        account: "帳號",
+                        phone: "電話",
+                        role: "權限",
+                        sub_domain: "sub-domain",
+                        state: "狀態",
+                    },
+
+                    data: [],
+                    dataBox: [],
+                    pageNumList: [5, 10, 20, 50, 100],
+                    onepageNum: 10,
+                    startPageBtn: 0,
+                    nowPage: 0,
+                    totalPage: 1,
+                }
+            },
+            methods: {
+                logout() {
+                    new HTTPreq("/i_search/logout/", "fd").geta().then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        if (res.status == "OK") {
+                            window.location.href = "/";
+                        }
+                    });
+                },
+                selectPage(nV, oV) {
+                    var data;
+                    this.nowPage = nV.minmax(1, this.totalPage);
+                    this.startPageBtn = (this.nowPage - 4).minmax(1, Math.max(this.totalPage - 8, 1)) - 1;
+                    this.dataBox.length = 0;
+                    for (var i = 0; i < this.onepageNum; i++) {
+                        data = this.data[(nV - 1) * this.onepageNum + i];
+                        if (!data) break;
+                        this.dataBox.push(data);
+                    }
+                },
+                getAccountList() {
+                    var T = this;
+                    new HTTPreq("/users/get_user_list/").geta().then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        if (res.status == "OK") {
+                            for (var i in res.data) res.data[i].state = res.data[i].state ? "啟用" : "停用";
+                            T.data = res.data;
+                            T.selectPage(1);
+                        }
+                    });
+                },
+            },
+            mounted() {
+                this.getAccountList();
+            },
+            created() { },
+            updated() { },
+            beforeUpdate() { },
+            watch: {
+                nowPage: {
+                    handler(nV, oV) {
+                        this.selectPage(nV, oV);
+                    }
+                },
+                onepageNum: {
+                    handler(nV, oV) {
+                        this.totalPage = Math.ceil(this.searchRes.length / nV);
+                        this.selectPage(this.nowPage, oV);
+                    }
+                },
+            }
+        });
+    </script>
+    {% endblock %}
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <script src="//unpkg.com/vue@3.2.37/dist/vue.global.prod.js"></script>
+
+    <script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css" crossorigin="anonymous"/>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <script src="//cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-submenu/3.0.1/js/bootstrap-submenu.js"></script>
+    
+    <link href="//unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.css" rel="stylesheet"/>
+    <script src="//unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.js"></script>
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+    <script src="/static/js/lodash.js"></script>
+    <script src="/static/js/HTTPreq.js"></script>
+    <script src="/static/js/supportFnc.js"></script>
+    <script src="/static/js/objectExtend.js"></script>
+    <script src="/static/js/ola_api.js" crossorigin="anonymous"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+    <link href="/static/css/app.css" rel="stylesheet">
+    <link href="/static/css/style.css?{{ timestamp }}" rel="stylesheet">
+    <script src="//kit.fontawesome.com/5e2cac8506.js" crossorigin="anonymous"></script>
+    
+    <style>
+        [role=button] {
+            cursor: pointer;
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+    <body>
+        <div id="vue_app" class="d-flex flex-column h-100">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height:63px;">
+                <div class="container-fluid">
+                    <span class="navbar-brand">
+                        <img src="#logo.png" class="img-fluid">
+                    </span>
+                    <span id="company_name" class="fw-light fs-5" aria-current="page"></span>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse ms-3" id="navbarScroll">
+                        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
+                            <li class="nav-item"><a class="nav-link" href="/i_search/telem/">電訪名單</a></li>
+                            <li id="list_download" class="nav-item d-none"><a class="nav-link" href="/i_search/list_download/">清單下載</a></li>
+                        </ul>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="true">
+                                {{ user.first_name }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" data-bs-popper="none">
+                                <li id="member_aclist" class="d-none tmp"><a class="dropdown-item" href="/i_search/member_aclist/">帳號管理</a></li>
+                                <li><a class="dropdown-item" href="#" @click="logout()">登出</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            {% block body %}
+            {% endblock %}
+        </div>
+        {% block script %}{% endblock %}
+        <script>
+            if(typeof baseapp == undefined) {
+                // console.log("default")
+                const baseapp = Vue.createApp({
+                    delimiters: ['((', '))'],
+                    data() {
+                        return {}
+                    },
+                    methods: {},
+                    mounted(){},
+                    created(){},
+                    updated(){},
+                    beforeUpdate(){},
+                });
+            }
+        </script>
+        <script src="/static/js/vDirective.js"></script>
+        <script>
+            const vm = baseapp.mount("#vue_app");
+            var role;
+
+            new HTTPreq("/i_search/get_logo/").geta().then((rcv)=>{
+                var res = supfnc.toJSON(rcv.result);
+                var company_name = document.getElementById("company_name");
+                if(company_name) company_name.innerHTML = res.company_name;
+                [...document.getElementsByTagName("img")].forEach((e)=>{if(e.src.includes("#logo.png")) e.src = res.logo});
+                [...document.getElementsByTagName("title")].forEach((e)=>{e.innerHTML = res.company_name;});
+
+                if([3, 4].includes(res.role)) document.getElementById("list_download").remove();
+                else document.getElementById("list_download").classList.remove("d-none");
+
+                if([0, 1, 2].includes(res.role)) document.getElementById("member_aclist").classList.remove("d-none");
+                else document.getElementById("member_aclist").remove();
+
+                role = res.role;
+            });
+        </script>
+    </body>
+</html>

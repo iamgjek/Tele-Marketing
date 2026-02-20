@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/5e2cac8506.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+    {% block head %}
+    <title>新增帳號</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background: #f2f2f2;
+        }
+
+        .wrapper {
+            min-height: 100%;
+            margin-bottom: -50px;
+        }
+
+        .content {
+            padding-bottom: 50px;
+        }
+
+        .footer {
+            height: 60px;
+            background-color: #495057;
+            ;
+        }
+
+        .text-muted {
+            color: #f2efeaa3 !important;
+        }
+
+        /* .container {
+            max-width: 50%;
+        }
+     */
+        .header-container {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            grid-gap: 20px;
+            align-items: center;
+        }
+
+        .table-striped>tbody>tr:nth-of-type(odd) {
+            --bs-table-accent-bg: rgb(122 122 122 / 5%);
+            color: #6b6b6b;
+        }
+
+        .table>:not(caption)>*>* {
+            padding: 0.5rem 0.3rem;
+            background-color: var(--bs-table-bg);
+            border-bottom-width: 1px;
+            box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+        }
+
+        .mt30 {
+            margin-top: -30px;
+        }
+
+        .img-fluid {
+            max-width: 200px !important;
+            max-height: 50px !important;
+        }
+
+        .dropdown {
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #444;
+            text-align: center;
+            line-height: 50px;
+        }
+
+        .dropdown-menu {
+            font-weight: 400;
+            background-color: #ffffff;
+            border: 1px solid rgb(255 255 255 / 15%);
+            min-width: 6.2rem;
+            box-shadow: 0px 10px 50px rgb(206 193 180 / 60%);
+        }
+
+        .dropdown-item:focus,
+        .dropdown-item:hover {
+            font-weight: 500;
+            color: #3882bb;
+            background-color: #e9ecef5c;
+        }
+
+        #menu {
+            display: none;
+        }
+
+        #menu:checked~ul {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(1rem);
+            transition: 0.3s;
+        }
+
+        @media (max-width: 960px) {
+            .container {
+                width: 90%
+            }
+        }
+
+        @media (min-width: 960px) {
+            .container {
+                width: 50%
+            }
+        }
+    </style>
+    {% endblock %}
+</head>
+
+<body>
+    {% block body %}
+    <div class="container">
+        <div class="header-container mt-4 mb-3">
+            <h2 class="fw-bold fs-5">新增帳號</h2>
+        </div>
+    </div>
+    <main class="mx-3 my-3">
+        <section class="container p-4 shadow-sm p-3 mb-5 bg-body rounded">
+            <div class="scrollbar w-100" id="style-1">
+                <div class="row g-2">
+                    <div class="col-6">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="text" class="form-control" placeholder="帳號"
+                                v-model="dataForm.account">
+                            <label for="floatingInput">帳號</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating mb-3 mx-1">
+                            <select class="form-control" v-model="dataForm.role">
+                                <option :value="2">主管</option>
+                                <option :value="3">專員</option>
+                            </select>
+                            <label for="floatingInput">權限</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-2">
+                    <div class="col-md">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="password" class="form-control" placeholder="密碼"
+                                v-model="dataForm.password">
+                            <label for="floatingInput">密碼</label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="password" class="form-control" placeholder="確認密碼"
+                                v-model="dataForm.password2">
+                            <label for="floatingInput">確認密碼</label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="text" class="form-control" placeholder="使用分機"
+                                v-model="dataForm.sip_ext">
+                            <label for="floatingInput">使用分機</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-2">
+                    <div class="col-md">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="text" class="form-control" placeholder="呼叫中心系統帳號"
+                                v-model="dataForm.sip_id">
+                            <label for="floatingInput">呼叫中心系統帳號</label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="password" class="form-control" placeholder="呼叫中心系統密碼"
+                                v-model="dataForm.sip_pwd">
+                            <label for="floatingInput">呼叫中心系統密碼</label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row g-2">
+                    <div class="col-md">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="text" class="form-control" id="Name" placeholder="名稱"
+                                v-model="dataForm.name">
+                            <label for="floatingInput">名稱</label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating mb-3 mx-1">
+                            <input type="text" class="form-control" id="Telephone" placeholder="電話"
+                                v-model="dataForm.phone">
+                            <label for="floatingInput">電話</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" @click="addAccount()"
+                style="background: #277bbc;">新增</button>
+        </section>
+    </main>
+    {% endblock %}
+
+    {% block script %}
+    <script>
+        const baseapp = Vue.createApp({
+            delimiters: ['((', '))'],
+            data() {
+                return {
+                    dataForm: {
+                        account: "",
+                        role: 3,
+                        password: "",
+                        password2: "",
+                        sip_ext: "",
+                        sip_id: "",
+                        sip_pwd: "",
+                        name: "",
+                        phone: "",
+                    }
+                }
+            },
+            methods: {
+                logout() {
+                    new HTTPreq("/i_search/logout/", "fd").geta().then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        if (res.status == "OK") {
+                            window.location.href = "/";
+                        }
+                    });
+                },
+                addAccount() {
+                    var T = this;
+                    if (!this.dataForm.account || !this.dataForm.password) {
+                        Swal.fire("請輸入帳號和密碼", "", "error");
+                        return;
+                    }
+                    if (this.dataForm.password != this.dataForm.password2) {
+                        Swal.fire("兩次密碼輸入不一致", "", "error");
+                        return;
+                    }
+                    new HTTPreq("/users/add_user/", "fd").posta(this.dataForm).then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        Swal.fire(res.msg, "", "success");
+                    });
+                },
+            },
+            mounted() { },
+            created() { },
+            updated() { },
+            beforeUpdate() { },
+        });
+    </script>
+    {% endblock %}
+
+</html>

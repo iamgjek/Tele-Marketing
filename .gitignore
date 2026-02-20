@@ -1,0 +1,105 @@
+# common / project
+local_settings.py
+*.pyc
+.vscode/
+.vs/
+*.sqlite3
+/media/*
+/static/
+/logs/
+__pycache__
+output_file/
+*.whl
+
+# celery temp file
+celerybeat-schedule
+celerybeat.pid
+
+# decouple env file
+.env
+
+# migration file
+*/migrations/*
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Django
+db.sqlite3-journal
+
+# Environments
+.envrc
+.venv
+env/
+venv/
+ENV/
+
+# pyenv / pdm / pixi
+.pdm-python
+.pdm-build/
+.pixi
+__pypackages__/
+
+# mypy / Pyre / pytype
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# IDE
+.ropeproject
+.spyderproject
+.spyproject
+.abstra/
+.ruff_cache/
+.cursorignore
+.cursorindexingignore
+
+# Marimo
+marimo/_static/
+marimo/_lsp/
+__marimo__/

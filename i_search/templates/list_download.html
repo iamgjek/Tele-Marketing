@@ -1,0 +1,595 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% block head %}
+    <title></title>
+    <style>
+        main .container-fluid {
+            padding: 0 2rem !important;
+        }
+        a:focus {
+            outline: none;
+        }
+        
+        #list .badge { 
+            color: #212529;
+            background-color: #E9EAEC;
+        }
+
+        .clearfix:after {
+            content: '.';
+            height: 0;
+            font-size: 0;
+            line-height: 0;
+            display: block;
+            clear: both;
+            overflow: hidden;
+            visibility: hidden;
+        }
+
+        .tabs-content {
+            background: rgb(255, 255, 255);
+        }
+
+        .tabs-menu {
+            background: #f7f7f7;
+        }
+
+        .tabs-menu ul {
+            list-style: none;
+        }
+
+        .tabs-menu ul li {
+            float: left;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .tabs-menu ul li:first-child {
+            margin: 0 0 0 -32px;
+        }
+
+        .tabs-menu ul li a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #adadad;
+            background: #f7f7f7;
+        }
+
+        .tabs-menu ul li a.active-tab-menu {
+            background: rgb(255, 255, 255);
+            color: #000;
+            border-color: white;
+            border-bottom: 2px solid;
+            border-bottom-color: #277bbc;
+        }
+
+        .tabs {
+            display: none;
+            padding: 30px;
+        }
+
+        .first-tab {
+            display: block;
+        }
+
+        .mt-10 {
+            margin-top: -10px;
+        }
+
+        .circle-btn {
+            background: #f2f2f2;
+            width: 33px;
+            height: 33px;
+            font-size: 18px;
+            color: #4c4c4c;
+            padding: 3px 3px;
+        }
+
+        .rounded-pill {
+            border-radius: 5px !important;
+        }
+
+        .bg-body {
+            background-color: #F0F0F0 !important;
+        }
+        
+        .page-link {
+            color: #626262;
+        }
+
+        .date-text {
+            font-size: .9rem;
+            letter-spacing: 2px;
+            color: #9b9b9b;
+        }
+
+        span {
+            color: #565656;
+            font-size: 15px;
+        }
+
+        select.form-select, label {
+            color: #6c757d;
+            border-color: #ced4da;
+            line-height: 1.4rem;
+            font-size: .9rem;
+        }
+    </style>
+    {% endblock %}
+</head>
+
+<body>
+    {% block body %}
+    <main class="container-fluid">
+        <section class="shadow-sm p-3 mb-5 rounded">
+            <div class="scrollbar w-100" id="style-1">
+                <div class="tabs-content mx-3">
+                    <div class="tabs-menu clearfix">
+                        <ul>
+                            <li>
+                                <a @click="selectType(0)" class="active-tab-menu" href="#" data-tab="tab1">謄本</a>
+                            </li>
+                            <li>
+                                <a @click="selectType(1)" href="#" data-tab="tab2">動產擔保</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- tabs-menu -->
+                    <div class="tab1 tabs first-tab">
+                        <div class="d-flex justify-content-start">
+                            <div class="mx-2 my-3 d-grid">
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle text-left p-2" data-bs-toggle="dropdown">
+                                    (( searchForm.age_interval.reduce((a,e,i)=>{if(e)a.push(i+"歲"); return a;}, []).join(" ") || "年齡區間" ))
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class="m-2" v-for="(value, key) in age_interval_list" @click.stop>
+                                        <label class="ml-2"><input type="checkbox" class="mr-2" :value="key" v-model="searchForm.age_interval[key]">(( value ))</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mx-2 my-3 d-grid">
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle text-left p-2" data-bs-toggle="dropdown">
+                                    (( searchForm.gender.reduce((a,e,i)=>{if(e)a.push(i); return a;}, []).join(" ") || "性別" ))
+                                </button>
+                                <ul class="dropdown-menu px-3">
+                                    <li class="m-2" v-for="(value, key) in gender_list" @click.stop>
+                                        <label class="ml-2"><input type="checkbox" class="mr-2" :value="key" v-model="searchForm.gender[key]">(( value ))</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mx-2 my-3 d-grid">
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle text-left p-2" data-bs-toggle="dropdown">
+                                    (( searchForm.credits.reduce((a,e,i)=>{if(e)a.push(i); return a;}, []).join(" ") || "他項權利設定" ))
+                                </button>
+                                <ul class="dropdown-menu px-3">
+                                    <li class="m-2" v-for="(value, key) in credits_list" @click.stop>
+                                        <label class="ml-2"><input type="checkbox" class="mr-2" :value="key" v-model="searchForm.credits[key]">(( value ))</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mx-2 my-3 d-grid">
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle text-left p-2" data-bs-toggle="dropdown">
+                                    (( searchForm.rights.reduce((a,e,i)=>{if(e)a.push(i); return a;}, []).join(" ") || "公同共有/持分" ))
+                                </button>
+                                <ul class="dropdown-menu px-3">
+                                    <li class="m-2" v-for="(value, key) in rights_list" @click.stop>
+                                        <label class="ml-2"><input type="checkbox" class="mr-2" :value="key" v-model="searchForm.rights[key]">(( value ))</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mx-2 my-3 d-grid">
+                                <select class="form-select" v-model="searchForm.city" @change="getArea(searchForm.city)">
+                                    <option value="">縣市</option>
+                                    <option v-for="(value, key) in city_list" :value="key">(( value ))</option>
+                                </select>
+                            </div>
+                            <div class="mx-2 my-3 d-grid">
+                                <select class="form-select" v-model="searchForm.area">
+                                    <option value="">行政區</option>
+                                    <option v-for="(value, key) in area_list[searchForm.city]" :value="value">(( value ))</option>
+                                </select>
+                            </div>
+                            <div class="mx-2 my-3 d-grid">
+                                <select class="form-select" v-model="searchForm.setting_time">
+                                    <option value="">設定時間</option>
+                                    <option v-for="(value, key) in setting_time_list" :value="value">(( value ))</option>
+                                </select>
+                            </div>
+                            <div class="mx-2 my-3 pt-2">
+                                <input id="del_call_phone" class="mx-2" type="checkbox" v-model="searchForm.del_call_phone">
+                                <label for="del_call_phone">排除重複號碼</label>
+                            </div>
+                            <div class="mx-2 my-3 d-grid">
+                                <button type="button" class="btn btn-primary mx-3" @click="serverSearchDownload()">查詢</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- .tab1 -->
+                    <div class="tab2 tabs">
+                        <div class="d-flex justify-content-start">
+                            <div class="mx-2 my-3 d-grid">
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle text-left p-2" data-bs-toggle="dropdown">
+                                    (( searchForm.age_interval.reduce((a,e,i)=>{if(e)a.push(i+"歲"); return a;}, []).join(" ") || "年齡區間" ))
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class="m-2" v-for="(value, key) in age_interval_list" @click.stop>
+                                        <label class="ml-2"><input type="checkbox" class="mr-2" :value="key" v-model="searchForm.age_interval[key]">(( value ))</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mx-2 my-3 d-grid">
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle text-left p-2" data-bs-toggle="dropdown">
+                                    (( searchForm.gender.reduce((a,e,i)=>{if(e)a.push(i); return a;}, []).join(" ") || "性別" ))
+                                </button>
+                                <ul class="dropdown-menu px-3">
+                                    <li class="m-2" v-for="(value, key) in gender_list" @click.stop>
+                                        <label class="ml-2"><input type="checkbox" class="mr-2" :value="key" v-model="searchForm.gender[key]">(( value ))</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mx-2 my-3 d-grid">
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle text-left p-2" data-bs-toggle="dropdown">
+                                    權利人
+                                </button>
+                                <ul class="dropdown-menu px-3" @click.stop>
+                                    <li class="m-2">
+                                        <input class="form-control" placeholder="關鍵字" v-model="searchForm.right_holder">
+                                    </li>
+                                    <hr/>
+                                    <li class="m-2">
+                                        <select class="form-select" v-model="searchForm.right_type">
+                                            <option value="">類別</option>
+                                            <option v-for="(value, key) in right_type_list" :value="key">(( value ))</option>
+                                        </select>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mx-2 my-3 d-grid">
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle text-left p-2" data-bs-toggle="dropdown">
+                                    擔保債權金額
+                                </button>
+                                <div class="dropdown-menu px-3">
+                                    <div class="input-group" @click.stop>
+                                        <input class="form-control" placeholder="起" v-model="searchForm.set_amount_lo">
+                                        <label class="input-group-text bg-white border-0">~</label>
+                                        <input class="form-control" placeholder="迄" v-model="searchForm.set_amount_up">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mx-2 my-3 d-grid">
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle text-left p-2" data-bs-toggle="dropdown">
+                                    契約起始日期
+                                </button>
+                                <div class="dropdown-menu px-3">
+                                    <div class="input-group" @click.stop>
+                                        <input class="form-control" placeholder="起" type="date" v-model="searchForm.set_start_time_lo">
+                                        <label class="input-group-text bg-white border-0">~</label>
+                                        <input class="form-control" placeholder="迄" type="date" v-model="searchForm.set_start_time_up">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mx-2 my-3 d-grid">
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle text-left p-2" data-bs-toggle="dropdown">
+                                    契約中止日期
+                                </button>
+                                <div class="dropdown-menu px-3">
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="起" type="date" v-model="searchForm.set_end_time_lo">
+                                        <label class="input-group-text bg-white border-0">~</label>
+                                        <input class="form-control" placeholder="迄" type="date" v-model="searchForm.set_end_time_up">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mx-2 my-3 pt-2">
+                                <input id="del_call_phone" class="mx-2" type="checkbox" v-model="searchForm.del_call_phone">
+                                <label for="del_call_phone">排除重複號碼</label>
+                            </div>
+                            <div class="mx-2 my-3 d-grid">
+                                <button type="button" class="btn btn-primary mx-3" @click="serverSearchDownload()">查詢</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- .tabs -->
+                <!-- .content -->
+                <div id="list">
+                    <div class="d-flex justify-content-center bd-highlight mt-5 mb-3 mx-4 py-4 bg-white" v-if="loading">
+                        <div class="spinner-border text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>  
+                    <div class="d-flex m-4 px-4 bg-white" v-for="data in searchResBoxC">
+                        <article class="fake-article col-10 px-3 pt-4 pb-2">
+                            <!-- <span class="mx-3 fw-bold">(( data.company_name ))</span> -->
+                            <span class="fw-light">搜尋條件</span>
+                            <div class="d-inline-block" v-html="data.search_condition.html"></div>
+                            
+                            <p class="date-text">
+                                (( data.datetime ))
+                                <span class="ms-3" v-if="!data.search_condition.del_call_phone">不排除重複號碼</span>
+                                <span class="ms-3" v-else>排除重複號碼</span>
+                                <span class="ms-2 me-1">共</span>
+                                (( data.count ))
+                                <span class="ms-1">筆搜尋結果</span>
+                            </p>
+                        </article>
+                        <div class="col-2 d-flex align-items-center justify-content-end px-3">
+                            <button v-if="data.count" type="button" class="btn btn-primary" @click="downloadFile(data.filename)">下載 excel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex bd-highlight mx-4">
+                <div class="p-2 flex-grow-1 bd-highlight">
+                    <div class="btn-group">
+                        <p style="margin: 7px 10px 0px 0px;">每頁</p>
+                        <select class="form-select" aria-label=" example" style="width:80px;" v-model="onepageNum">
+                            <option v-for="i in pageNumList" :value="i">((i))</option>
+                        </select>
+                        <p style="margin: 7px 10px 0px 9px;width: 200px;">筆，共(( searchRes.length ))筆</p>
+                    </div>
+                </div>
+                <nav aria-label="">
+                    <ul class="pagination d-flex justify-content-center my-2">
+                        
+                        <li class="page-item">
+                            <span class="page-link" role="button" @click="nowPage--">上一頁</span>
+                        </li>
+                        <li class="page-item" :class="{active:nowPage==startPageBtn+i}" v-for="i in 9..minmax(1,totalPage)" @click="nowPage=startPageBtn+i">
+                            <span role="button" class="page-link">(( startPageBtn+i ))</span>
+                        </li>
+                        <li class="page-item">
+                            <span role="button" class="page-link" @click="nowPage++">下一頁</span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </section>
+    </main>
+    {% endblock %}
+
+    {% block script %}
+    <script>
+        const baseapp = Vue.createApp({
+            delimiters: ['((', '))'],
+            data() {
+                return {
+                    age_interval_list: {
+                        "20-29": "20~29歲",
+                        "30-39": "30~39歲",
+                        "40-49": "40~49歲",
+                        "50-59": "50~59歲",
+                        "60-69": "60~69歲",
+                        "70-79": "70~79歲",
+                    },
+                    gender_list: {
+                        "男": "男",
+                        "女": "女",
+                    },
+                    credits_list: {
+                        "無設定": "無設定",
+                        "私設": "私設",
+                        "銀行二胎": "銀行二胎",
+                        "銀行": "銀行",
+                        "租賃": "租賃",
+                        "公司": "公司",
+                    },
+                    rights_list: {
+                        "全部": "全部",
+                        "持分": "持分",
+                        "公同共有":"公同共有",
+                    },
+                    location_list: {
+                        "": "土地/建物所在地",
+                    },
+                    setting_time_list: {
+                        "近3個月":"近3個月",
+                        "近6個月":"近6個月",
+                        "近1年":"近1年",
+                        "近2年":"近2年",
+                        "2年以上":"2年以上"
+                    },
+                    right_type_list:{
+                        // "無設定": "無設定",
+                        // "政府機構": "政府機構",
+                        "自然人": "自然人",
+                        "公司": "公司",
+                        "租賃業者": "租賃業者",
+                        "金融機構": "金融機構",
+                    },
+                    city_list: { "A": "臺北市", "C": "基隆市", "F": "新北市", "H": "桃園市", "O": "新竹市", "J": "新竹縣", "B": "臺中市", "K": "苗栗縣", "N": "彰化縣", "M": "南投縣", "P": "雲林縣", "D": "臺南市", "E": "高雄市", "I": "嘉義市", "Q": "嘉義縣", "T": "屏東縣", "G": "宜蘭縣", "U": "花蓮縣", "V": "臺東縣",/* "X": "澎湖縣", "W": "金門縣", "Z": "連江縣" */},
+                    area_list: {},
+                    searchForm:{
+                        event: "謄本",
+                        age_interval: {},
+                        gender: {},
+                        credits: {},
+                        rights: {},
+                        location: "",
+
+                        city: "",
+                        area: "",
+                        setting_time: "",
+                        del_call_phone: true,
+
+                        right_holder: "",
+                        right_type: "",
+                        set_amount_lo: 0,
+                        set_amount_up: 0,
+                        set_start_time_lo: "",
+                        set_start_time_up: "",
+                        set_end_time_lo: "",
+                        set_end_time_up: "",
+                    },
+                    searchFormOrig: {},
+                    loading: 0,
+                    pageNumList: [5, 10, 20, 50, 100],
+                    onepageNum: 10,
+                    startPageBtn: 0,
+                    nowPage: 0,
+                    totalPage: 1,
+                    searchRes: [],
+                    searchResBox: [],
+                }
+            },
+            methods: {
+                logout(){
+                    new HTTPreq("/i_search/logout/", "fd").geta().then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        if(res.status == "OK"){
+                            window.location.href = "/";
+                        }
+                    });
+                },
+                getArea(city){
+                    var T = this;
+                    if(!city || this.area_list[city]) return;
+                    new HTTPreq("/i_search/get_area/?city=" + city).geta().then((rcv) => {
+                        var res = supfnc.toJSON(rcv.result), data = {};
+                        for(var i in res){
+                            data[city + "_" + res[i].area_code] = res[i].area_name;
+                        }
+                        T.area_list[city] = data;
+                    });
+                },
+                selectType(type){
+                    this.searchForm = this.searchFormOrig.duplicate();
+                    switch(type){
+                        case 0:
+                            this.searchForm.event = "謄本";
+                            break;
+                        case 1:
+                            this.searchForm.event = "動保";
+                            break;
+                    }
+                },
+                serverSearchDownload(){
+                    var T = this;
+                    var searchForm = this.searchForm.duplicate();
+                    if(searchForm.event == '謄本' && !searchForm.city) {
+                        Swal.fire("請選擇縣市", "", "info");
+                        return;
+                    }
+                    else if(searchForm.event == '動保' && !(searchForm.right_holder.length || searchForm.right_type.length)) {
+                        Swal.fire("請選擇權利人", "", "info");
+                        return;
+                    } 
+                    else {
+                        this.loading = 1;
+                        searchForm.age_interval = searchForm.age_interval.reduce((a,e,i)=>{if(e)a.push(i); return a;}, []);
+                        searchForm.gender = searchForm.gender.reduce((a,e,i)=>{if(e)a.push(i); return a;}, []);
+                        searchForm.credits = searchForm.credits.reduce((a,e,i)=>{if(e)a.push(i); return a;}, []);
+                        searchForm.rights = searchForm.rights.reduce((a,e,i)=>{if(e)a.push(i); return a;}, []);
+                        searchForm.right_type = [searchForm.right_type];
+                        searchForm.location = [[this.city_list[searchForm.city], searchForm.area]].reduce((a,e) => {a.push(e.filter(z=>z));return a;}, []);
+                        delete searchForm.city;
+                        delete searchForm.area;
+
+                        new HTTPreq("/i_search/download_phone/", "fd").posta(searchForm).then(rcv => {
+                            this.loading = 0;
+                            var res = supfnc.toJSON(rcv.result);
+                            if(res.status == "OK"){
+                                window.open("/i_search/download/" + res.filename);
+                                T.getDownloadList();
+                            } else {
+                                Swal.fire(res.msg, "", "error");
+                            }
+                        });
+                    }
+                },
+                getDownloadList(){
+                    var T = this;
+                    this.loading = 1;
+                    new HTTPreq("/i_search/get_download_list/").geta().then(rcv => {
+                        this.loading = 0;
+                        var res = supfnc.toJSON(rcv.result);
+                        this.searchRes = res.data;
+                        T.selectPage(1);
+                    });
+                },
+                downloadFile(fileName){
+                    window.open("/i_search/download/" + fileName);
+                },
+                selectPage(nV, oV){
+                    var data;
+                    this.nowPage = nV.minmax(1, this.totalPage);
+                    this.startPageBtn = (this.nowPage-4).minmax(1, Math.max(this.totalPage-8, 1)) - 1;
+                    this.searchResBox.length = 0;
+                    for(var i=0; i<this.onepageNum; i++){
+                        data = this.searchRes[(nV-1) * this.onepageNum + i];
+                        if(!data) break;
+                        this.searchResBox.push(data);
+                    }
+                },
+            },
+            mounted(){
+                this.getDownloadList();
+                this.searchFormOrig = this.searchForm.duplicate();
+            },
+            created(){},
+            updated(){},
+            beforeUpdate(){},
+            watch:{
+                nowPage:{
+                    handler(nV, oV){
+                        this.selectPage(nV, oV);
+                    }
+                },
+                onepageNum:{
+                    handler(nV, oV){
+                        this.totalPage = Math.ceil(this.searchRes.length / nV);
+                        this.selectPage(this.nowPage, oV);
+                    }
+                },
+            },
+            computed:{
+                searchResBoxC(){
+                    return this.searchResBox.reduce((a,e) => {
+                        var cdn = e.search_condition;
+                        var age_interval = cdn.age_interval.join("，");
+                        var gender = cdn.gender.join("，");
+                        var credits = cdn.credits.join("，");
+                        var rights = cdn.rights.join("，");
+                        var location = cdn.location.reduce((a2, e2) => {a2.push(e2.join("、"));return a2;}, []).join("，");
+                        var setting_time = cdn.setting_time;
+
+                        var right_holder = cdn.right_holder;
+                        var right_type = cdn.right_type;
+                        var set_amount = (cdn.set_amount_lo || cdn.set_amount_up) ? `債權擔保金額${ cdn.set_amount_lo } ~ ${ cdn.set_amount_up }` : "";
+                        var set_start_time = (cdn.set_start_time_lo || cdn.set_start_time_up) ? `契約起始日期${ cdn.set_start_time_lo } ~ ${ cdn.set_start_time_up }` : "";
+                        var set_end_time = (cdn.set_end_time_lo || cdn.set_end_time_up) ? `契約中止日期${ cdn.set_end_time_lo } ~ ${ cdn.set_end_time_up }` : "";
+
+                        e = e.duplicate();
+                        e.search_condition.html = `<span class="mx-2 fw-light badge ${ cdn.event == "謄本" ? "text-bg-info": "text-bg-warning" }">${cdn.event}</span>` + [age_interval, gender, credits, rights, location, setting_time, right_holder, right_type, set_amount, set_start_time, set_end_time].reduce((a2,e2) => {if(e2)a2.push(`<span class="mx-2 fw-bold">${e2}</span>`); return a2;}, []).join(`<span class="badge">+</span>`);
+                        a.push(e);
+                        return a;
+                    }, []);
+                }
+            },
+        });
+    
+        jQuery(function ($) {
+            $('.tabs-menu ul li a').click(function () {
+                var a = $(this);
+                var active_tab_class = 'active-tab-menu';
+                var the_tab = '.' + a.attr('data-tab');
+                $('.tabs-menu ul li a').removeClass(active_tab_class);
+                a.addClass(active_tab_class);
+                $('.tabs-content .tabs').css({
+                    'display': 'none'
+                });
+                $(the_tab).show();
+                return false;
+            });
+        });
+    </script>
+    {% endblock %}
+</body>
+</html>

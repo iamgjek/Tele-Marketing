@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.prod.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css" crossorigin="anonymous"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js" crossorigin="anonymous"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/5e2cac8506.js" crossorigin="anonymous"></script>
+
+    <script src="/static/css/style.css" crossorigin="anonymous"></script>
+
+    <script src="/static/js/objectExtend.js" crossorigin="anonymous"></script>
+    <script src="/static/js/supportFnc.js" crossorigin="anonymous"></script>
+    <script src="/static/js/HTTPreq.js" crossorigin="anonymous"></script>
+    <title></title>
+</head>
+<style>
+    body {
+        background: #f2f2f2;
+        color: #606468;
+        margin: 0;
+    }
+
+    input {
+        border: none;
+        font-size: 16px;
+        padding: 0;
+    }
+
+    #vue_app {
+        margin: 200px auto;
+        width: 800px;
+    }
+
+    #vue_app form {
+        margin: auto;
+        padding: 22px 22px 22px 22px;
+        width: 100%;
+        border-radius: 5px;
+        background: #ffffff;
+        border-top: 3px solid #ffffff;
+        border-bottom: 3px solid #d7d7d7;
+    }
+
+    #vue_app form input[type="text"] {
+        background-color: #f2f2f2;
+        border-radius: 0px 3px 3px 0px;
+        color: #505050;
+        margin-bottom: 1em;
+        padding: 0 16px;
+        width: 100%;
+        height: 50px;
+    }
+
+    #vue_app form input[type="password"] {
+        background-color:#f2f2f2;
+        border-radius: 0px 3px 3px 0px;
+        color: #505050;
+        margin-bottom: 1em;
+        padding: 0 16px;
+        width: 100%;
+        height: 50px;
+    }
+
+    .ml {
+        margin-left: 80px;
+        letter-spacing: 2px;
+    }
+
+    .img-fluid {
+        height: 100px;
+    }
+
+    h5.mt-3 {
+        margin-top: 114px !important;
+    }
+
+    .updator {
+        height: 218px;
+        overflow: hidden;
+        overflow-y: scroll;
+        border: 1px #ccc solid;
+        padding: 1rem;
+    }
+
+    .updator li {
+        font-size: .8rem;
+    }
+</style>
+
+<body>
+    <div id="vue_app" class="container">
+        <div class="row">
+            <div class="col-8 text-center">
+                <img src="#logo.png" class="img-fluid">
+                <h2 id="company_name" class="text-center"></h2>
+                <form name='form-login'>
+                    <input type="text" id="user" placeholder="請輸入帳號" v-model="loginData.login">
+                    <input type="password" id="password" placeholder="請輸入密碼" v-model="loginData.password" @keydown.enter="login()">
+                    <button type="button" class="w-100 btn btn-primary fw-bold" @click="login()"style="background: #277bbc;">登入</button>
+                </form>
+            </div>
+            <div class="col">
+                <h5 class="mt-3">版本更新</h5>
+                <div class="updator">
+                    <div>
+                        <p class="mb-0 fw-lighter">2023/03/23</p>
+                        <ul>
+                            <li>謄本清單下載新增篩選條件</li>
+                            <li>清單下載加入排除重複號碼選項</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="mb-0 fw-lighter">2023/03/17</p>
+                        <ul>
+                            <li>新增號碼反查</li>
+                            <li>已知錯誤修正</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="mb-0 fw-lighter">2023/03/16</p>
+                        <ul>
+                            <li>新增電話撥出功能</li>
+                            <li>動保清單下載新增篩選條件</li>
+                            <li>已知錯誤修正</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="mb-0 fw-lighter">2023/03/08</p>
+                        <ul>
+                            <li>管理員移除文字屏蔽</li>
+                            <li>歷史通話名單提示已讀/未讀</li>
+                            <li>待追蹤清單規則調整</li>
+                                <ul>
+                                    <li>10 天未更新自動轉出給主管</li>
+                                    <li>7 天未更新跳出提示</li>
+                                </ul>
+                            <li>歷史通話名單加入電話搜尋</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="mb-0 fw-lighter">2023/03/02</p>
+                        <ul>
+                            <li>新增清單下載功能</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const baseapp = Vue.createApp({
+            delimiters: ['((', '))'],
+            data() {
+                return {
+                    loginData: {
+                        login: "",
+                        password: "",
+                        remember: false
+                    }
+                }
+            },
+            methods: {
+                login(){
+                    new HTTPreq("/i_search/login/", "fd").posta(this.loginData).then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        if(res.status == "OK"){
+                            window.location.href = "/i_search/telem/";
+                        }
+                        else{
+                            // Swal.fire(res.msg, "", "error");
+                            Swal.fire("請輸入正確的帳號密碼", "", "error");
+                        }
+                    });
+                }
+            },
+            mounted(){
+                new HTTPreq("/i_search/get_logo/").geta().then((rcv)=>{
+                    var res = supfnc.toJSON(rcv.result);
+                    var company_name = document.getElementById("company_name");
+                    if(company_name) company_name.innerHTML = res.company_name;
+                    [...document.getElementsByTagName("img")].forEach((e)=>{if(e.src.includes("#logo.png")) e.src = res.logo});
+                    [...document.getElementsByTagName("title")].forEach((e)=>{e.innerHTML = res.company_name;});
+                });
+            },
+            created(){},
+            updated(){},
+            beforeUpdate(){},
+        });
+    </script>
+    <script src="/static/js/vDirective.js"></script>
+    <script>
+        const vm = baseapp.mount("#vue_app");
+    </script>
+</body>
+
+</html>

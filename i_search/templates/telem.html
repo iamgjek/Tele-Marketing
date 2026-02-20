@@ -1,0 +1,1296 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% block head %}
+    <title></title>
+    <style>
+        .accordion-body .badge, .col-2.badge {
+            display: table;
+        }
+
+        .accordion-body .form-select {
+            font-size: .875rem;
+        }
+
+        .sidebar-title-area .badge {
+            padding: 5px 8px;
+            font-size: .7rem;
+            font-weight: 300;
+            color: #555;
+            background-color: #ddd;
+        }
+
+        .bg {
+            background: #b9b9b9;
+            color: white;
+        }
+
+        table, th, td {
+            border: 1px solid rgb(241 241 241);
+            border-collapse: collapse;
+            letter-spacing: .4px;
+        }
+
+        tr {
+            color: #277bbc;
+            background-color: #ffffff;
+            font-weight: 400;
+
+        }
+
+        .modal-backdrop {
+            background-color: #fff;
+        }
+
+        .table-striped>tbody>tr:nth-of-type(odd) {
+            --bs-table-accent-bg: rgb(250 250 250);
+            color: #277bbc;
+        }
+
+        .remove {
+            float: right;
+        }
+
+        select {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        select:focus {
+            outline: none;
+        }
+
+        .smallbtn {
+            font-size: .7rem;
+            font-weight: 300;
+            width: auto;
+            height: 29px;
+        }
+
+        .list-group-item.active {
+            z-index: 2;
+            color: #363636;
+            background-color: #f7f3ed;
+            border-color: #c8c8c8;
+        }
+
+        a {
+            color: #074E8C;
+        }
+
+        .scrollbar {
+            overflow-X: scroll;
+            overflow-y: auto;
+        }
+
+        .force-overflow {
+            min-width: 300px;
+            padding: 20px;
+        }
+
+        #wrapper {
+            text-align: center;
+            width: 400px;
+            margin: auto;
+        }
+
+        #style-1::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: #fff;
+        }
+
+        #style-1::-webkit-scrollbar {
+            width: 20px;
+            background-color: #f1f1f1;
+        }
+
+        #style-1::-webkit-scrollbar-thumb {
+            border-radius: 20px;
+            -webkit-box-shadow: inset 0 0 6px rgba(136, 136, 136, 0.2);
+            background-color: #ededed;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        .accordion-button {
+            font-size: 16px;
+            letter-spacing: 2px;
+            padding: 16px 22px;
+            background-color: #f7f3ed;
+
+        }
+
+        .accordion-button:not(.collapsed) {
+            color: #555;
+            background: #e6e6e6;
+            border-bottom: 0px solid #e6e6e6;
+        }
+
+        .accordion-button:not(.collapsed) :hover {
+            color: #555;
+            background: #ffffff;
+            border-bottom: 0px solid #e6e6e6;
+        }
+
+        .accordion-item {
+            background-color: #ffffffa1;
+            border: 1px solid rgba(255, 255, 255, 0.466);
+        }
+
+
+        .bordercolor {
+            border: 1px solid #e3e3e3;
+            border-radius: 3px;
+        }
+
+        .table-active {
+            --bs-table-accent-bg: rgb(247 247 247);
+            color: #555;
+        }
+
+        .btn-shodow {
+            box-shadow: 0px 0px 20px #ced4da;
+            color: #427caf;
+        }
+
+        .form-control {
+            height: 38px;
+            font-size: 14px;
+        }
+
+        .offcanvasLeft {
+            position: fixed;
+            width: 43px;
+            height: 40px !important;
+            background: rgb(255, 255, 255);
+            top: 50%;
+            bottom: 0px;
+            float: right;
+            z-index: 2;
+        }
+
+        .offcanvasRight {
+            position: fixed;
+            width: 43px;
+            height: 40px !important;
+            background: rgb(255, 255, 255);
+            top: 50%;
+            right: 0px;
+            bottom: 0px;
+            float: right;
+        }
+
+        .table>:not(:last-child)>:last-child>* {
+            border-bottom: 1px solid #277bbc;
+            color: #555;
+        }
+
+        .accordion-button {
+            padding: 0.5em;
+            ;
+        }
+
+        .offcanvas-end {
+            width: 325px;
+            border-left: 1px solid rgb(226 222 217);
+        }
+
+        .accordion-button:focus {
+            z-index: 3;
+            border-left-color: #ffffff;
+            border-color: #ffffff;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-check:focus+.btn, .btn:focus {
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgb(255 255 255 / 25%);
+        }
+
+        .new {
+            color: #0d6efd;
+        }
+
+        @media (max-width:764px) {
+            .sm-my-3 {
+                margin-top: 10px;
+            }
+        }
+
+        .bge5 {
+            font-weight: 600;
+            background-color: #fafafa;
+            padding: 10px 5px 0 5px;
+        }
+
+        .table>thead {
+            vertical-align: bottom;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        tbody, td, tfoot, th, thead, tr {
+            border-color: inherit;
+            border-style: solid;
+            border-width: 0;
+            font-weight: 500;
+        }
+
+        .table {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-color: #e8e7e6;
+            margin-bottom: 3px;
+        }
+
+        .offcanvas-end {
+            width: 350px;
+        }
+
+        .nav-tabs {
+            border-bottom: 1px solid #f2efea;
+        }
+
+        .dropdown-item:focus, .dropdown-item:hover {
+            color: #1e2125;
+            background-color: #fcfbfa;
+        }
+
+        .font-15 {
+            font-size: 15px;
+        }
+
+        .accordion-body {
+            padding: 14px;
+        }
+
+        .list-group-item.active {
+            z-index: 2;
+            color: #555;
+            background-color: #f2f2f2;
+            border-color: #e1dbdb;
+        }
+
+        .accordion-button {
+            font-size: 16px;
+            letter-spacing: 2px;
+            padding: 16px 22px;
+            background-color: #f2f2f2;
+        }
+
+        .accordion-button:not(.collapsed) {
+            color: #555;
+            background: #f2f2f2;
+            border-bottom: 0px solid #e6e6e6;
+        }
+
+        .nav-tabs .nav-link.active {
+            border-color: white;
+            border-bottom: 5px solid;
+            border-bottom-color: #277bbc;
+            border-bottom-width: 3px;
+            color: #000;
+            background-color: #ffffff;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #bebebe;
+            text-decoration: none;
+            transition: color .25s ease-in-out, background-color .25s ease-in-out, border-color .25s ease-in-out;
+        }
+
+        .nav-link:focus, .nav-link:hover {
+            color: #7a7a7a;
+            border-color: #ffffff66;
+            isolation: isolate;
+            background: #ffffff66;
+        }
+
+        .table>:not(caption)>*>* {
+            padding: 0.5rem 1rem;
+        }
+
+        .leftbor {
+            border-left: 5px solid;
+            border-left-color: #277bbc;
+            border-left-width: 2px;
+        }
+
+        .accordion-button:focus {
+            border-left: solid;
+            border-left-color: #afafaf;
+            border-left-width: 2px;
+            /* z-index: 3; */
+            /* border-color: #ffffff; */
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgb(255 255 255 / 25%);
+        }
+
+        .form-control {
+            color: #277bbc;
+
+        }
+
+        .form-control:focus {
+            color: #277bbc;
+            background-color: #fff;
+            border-color: #f2f2f2;
+            outline: 0;
+            box-shadow: 0 0 0 0.1rem #0dcaf05c;
+            box-shadow: 0 0 0 0.1rem rgb(13 110 253 / 25%);
+        }
+
+        .dropdown-menu[data-bs-popper] {
+            left: 0px;
+        }
+
+        div.scrollable {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+        }
+
+        .popup {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .popup .popuptext {
+            visibility: hidden;
+            width: 160px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -80px;
+        }
+
+        /* Popup arrow */
+        .popup .popuptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+        /* Toggle this class - hide and show the popup */
+        .popup .show {
+            z-index: 99999;
+            visibility: visible;
+            -webkit-animation: fadeIn 1s;
+            animation: fadeIn 1s;
+        }
+
+        /* Add animation (fade in the popup) */
+        @-webkit-keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            margin-top: 99px;
+            box-shadow: 0px 0px 50px #67a3cf7d;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid rgb(255 255 255 / 20%);
+            border-radius: 0.5rem;
+        }
+
+        .smalltext.font-15.fw-light:last-child {
+            color: #444;
+            font-size: .7rem;
+        }
+
+        .sidebar-dropdown .fs-6 {
+            font-size: .8rem;
+        }
+
+        #sidebar .dropdown-menu.show {
+            width: 90%;
+            inset: 0 0 auto 30px !important;
+        }
+    </style>
+    {% endblock %}
+</head>
+
+<body>
+    {% block body %}
+    <div class="wrapper">
+        <nav id="sidebar" class="sidebar" style="transition: .3s;">
+            <div class="sidebar-content js-simplebar" data-simplebar="init">
+                <div class="simplebar-wrapper">
+                    <div class="simplebar-mask">
+                        <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                            <div class="simplebar-content-wrapper" style="height: 100%; overflow: hidden scroll;">
+                                <div class="simplebar-content">
+                                    <div class="mt-3 mb-2 mx-3 d-grid">
+                                        <button v-if="tagList.length" type="button" class="btn btn-outline-secondary dropdown-toggle text-left" data-bs-toggle="dropdown">
+                                            請選擇標籤
+                                        </button>
+                                        <button v-else type="button" class="btn btn-outline-secondary text-left p-2" data-bs-toggle="dropdown">
+                                            無標籤
+                                        </button>
+                                        <ul class="dropdown-menu mx-3 px-3">
+                                            <li v-for="(tag, tagIdx) in tagList" @click.stop class="px-2">
+                                                <input :id="'tag'+tagIdx" v-model="keytag[tag]" type="checkbox">
+                                                <label class="ml-2" :for="'tag'+tagIdx">((tag))</label>
+                                            </li>
+                                        </ul>
+                                        <div class="input-group my-2">
+                                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                            <input class="form-control" placeholder="請輸入關鍵字" v-model="keyword"/>
+                                        </div>
+                                    </div>
+                                    <!-- 待追蹤 -->
+                                    <div v-if="follow_filtered.length">
+                                        <div class="sidebar-title-area">
+                                            <a class="bd-highlight sidebar-link fw-light"
+                                                data-bs-toggle="collapse" href="#follow" role="button"
+                                                aria-expanded="true" aria-controls="collapseExample">待追蹤<span class="float-end badge">(( follow_filtered_notread )) / (( follow_filtered.length ))</span>
+                                            </a>
+                                        </div>
+                                        <div class="overflow-auto sidebar-dropdown list-unstyled collapse show"
+                                            id="follow">
+                                            <div class="pt-1 pb-2 mx-3" v-for="dataR in follow_filtered"
+                                                @click="getDetail(dataR.ptoken)"
+                                                :class="{'clickbg': dataR.ptoken==showTel}">
+                                                <div class="container">
+                                                    <div class="row my-2">
+                                                        <div class="px-4 col-lg-6 col-md-6 col-sm-6 fw-bold"
+                                                            style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;" :class="{'remind': dataR.remind}"> ((dataR.name_list.join(', ') || "未知名稱" ))</div>
+                                                        <div
+                                                            class="col-lg-4 col-md-4 col-sm-4 ms-auto me-3 fw-light phonecolor" :class="{'dot': !dataR.read}">
+                                                            (( dataR.phone ))
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="container">
+                                                    <div class="row px-3">
+                                                        <span
+                                                            class="pt-2 m-1 badge rounded-pill text-bg-primary smallbtn"
+                                                            v-for="tag in dataR.tag">(( tag ))</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 已撥打 -->
+                                    <div>
+                                        <span class="sidebar-title-area">
+                                            <a class="bd-highlight sidebar-link fw-light"
+                                                data-bs-toggle="collapse" href="#types6" role="button"
+                                                aria-expanded="true" aria-controls="collapseExample">已撥打<span class="float-end badge">(( telRecord_filtered_notread )) / (( telRecord_filtered.length ))</span>
+                                            </a>
+                                        </span>
+                                        <div class="overflow-auto sidebar-dropdown list-unstyled collapse show"
+                                            id="types6">
+                                            <div class="pt-1 pb-2 mx-3" v-for="dataR in telRecord_filtered"
+                                                @click="getDetail(dataR.ptoken)"
+                                                :class="{'clickbg': dataR.ptoken==showTel}">
+                                                <div class="container">
+                                                    <div class="row my-2">
+                                                        <div class="px-4 col-lg-6 col-md-6 col-sm-6 fw-bold"
+                                                            style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;">
+                                                            ((dataR.name_list.join(', ') || "未知名稱" ))</div>
+                                                        <div
+                                                            class="col-lg-4 col-md-4 col-sm-4 ms-auto me-3 fw-light phonecolor" :class="{'dot': !dataR.read}">
+                                                            (( dataR.phone ))
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="container">
+                                                    <div class="row px-3">
+                                                        <span
+                                                            class="pt-2 m-1 col-2 badge rounded-pill btn-primary smallbtn"
+                                                            v-for="tag in dataR.tag">(( tag ))</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 已結案 -->
+                                    <div v-if="endcase_filtered.length">
+                                        <span class="sidebar-title-area">
+                                            <a class="bd-highlight sidebar-link fw-light"
+                                                data-bs-toggle="collapse" href="#endcase" role="button"
+                                                aria-expanded="true" aria-controls="collapseExample">已結案<span class="float-end badge">(( endcase_filtered_notread )) / (( endcase_filtered.length ))</span>
+                                            </a>
+                                        </span>
+                                        <div class="overflow-auto sidebar-dropdown list-unstyled collapse show"
+                                            id="endcase">
+                                            <div class="pt-1 pb-2 mx-3" v-for="dataR in endcase_filtered"
+                                                @click="getDetail(dataR.ptoken)"
+                                                :class="{'clickbg': dataR.ptoken==showTel}">
+                                                <div class="container">
+                                                    <div class="row my-2" role="button">
+                                                        <div class="px-4 col-lg-6 col-md-6 col-sm-6 fw-bold"
+                                                            style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;">
+                                                            ((dataR.name_list.join(', ') || "未知名稱" ))</div>
+                                                        <div
+                                                            class="col-lg-4 col-md-4 col-sm-4 ms-auto me-3 fw-light phonecolor" :class="{'dot': !dataR.read}">
+                                                            (( dataR.phone ))
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="container">
+                                                    <div class="row px-3">
+                                                        <span
+                                                            class="pt-2 m-1 col-2 badge rounded-pill btn-primary smallbtn "
+                                                            v-for="tag in dataR.tag">(( tag ))</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </nav>
+        <!-- 右側標題 -->
+        <div class="main">
+            <button class="btn btn-shodow offcanvasLeft" type="button" 
+                id="nav_open" @click="foldLeft()">
+                <i id="leftCtx" class="fa-solid fa-angles-left"></i>
+            </button>
+            <!-- <nav class="navbar-expand navbar-light navbar-bg btn-shodow" @click="foldLeft()"
+                style="position:fixed">
+                <span class="sidebar-toggle d-flex" id="nav_open">
+                    <i id="leftCtx" class="fa-solid fa-angles-left" style="padding:13px;"></i>
+                </span>
+            </nav> -->
+            <main class="content">
+                <div id="call" class="controller row align-items-center">
+                    <div class="col">
+                        <span class="pr-3">工號：(( config.ola_account || "未登入" ))</span>
+                        <span class="pr-3">分機：(( config.ola_extn || "未設定" ))</span>
+                        <a :href="'sip:' + AESdecrypt(showTel)" class="btn btn-danger" v-if="detailInfo[showTel]?.persons?.length">通話</a>
+                    </div>
+                    <div class="col-4 call_status d-flex justify-content-end">
+                        <div class="input-group mx-3">
+                            <input type="text" class="form-control" placeholder="請輸入號碼" v-model="manual_num">
+                            <botton class="btn btn-sm btn-primary" @click="getDetail(AESencrypt(manual_num), '0', '0')">查詢</botton>
+                        </div>
+                        <div class="input-group">
+                            <label>連線狀態</label>
+                            <select class="form-select justify-content-end" v-model="connect_status">
+                                <option :value="0">示忙</option>
+                                <option :value="1">示閑</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="scrollbar offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+                    aria-labelledby="offcanvasRightLabel">
+                    <div class="offcanvas-header" style="z-index: 100; background: white;">
+                        <h5 style="margin-top: 10px;"></h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                            aria-label="Close" style="font-size: 12px;margin-bottom: -20px;"></button>
+                    </div>
+
+                    <div class="accordion" id="accordionPanelsStayOpenExample"
+                        style="background: white;margin-top: 13px;">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                                <button class="accordion-button fw-light leftbor" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne"
+                                    aria-expanded="true" aria-controls="panelsStayOpen-collapseOne"
+                                    style="padding: 16px 14px;">
+                                    標籤
+                                </button>
+                            </h2>
+                            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                                aria-labelledby="panelsStayOpen-headingOne">
+                                <div class="accordion-body" style="margin-top: -5px;">
+                                    <div class="m-1">
+                                        <div class="row">
+                                            <input class="form-control" placeholder="請輸入標籤名稱(以逗號區隔)" type="text"
+                                                id="inputText" v-model="tag_list"
+                                                style="margin-left: 6px; width: 97%;">
+                                        </div>
+                                        <div class="row rounded">
+                                            <div class="d-flex col-12">
+                                                <div class="row my-2">
+                                                    <span
+                                                        class="pt-2 m-1 col-2 badge rounded-pill btn-primary smallbtn"
+                                                        v-for="line in splitrm(tag_list)">(( line ))</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- transfer_out -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingTwo">
+                                <button class="accordion-button fw-light leftbor" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo"
+                                    aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo"
+                                    style="padding: 16px 14px;" style="padding: 16px 22px;">
+                                    轉出
+                                </button>
+                            </h2>
+                            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show"
+                                aria-labelledby="panelsStayOpen-headingOne">
+                                <div class="accordion-body">
+                                    <div>
+                                        <div class="select">
+                                            <select class="form-select" id="transfer_out_type" v-model="transfer_out_type">
+                                                <option v-for="(txt, idx) in transfer_out_type_list" class="option" :value="idx" v-show="idx!=1 || role==3">((txt))</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- handle_type -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingThree">
+                                <button class="accordion-button fw-light leftbor" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree"
+                                    aria-expanded="true" aria-controls="panelsStayOpen-collapseThree"
+                                    style="padding: 16px 14px;" style="padding: 16px 22px;">
+                                    處理類型
+                                </button>
+                            </h2>
+                            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show"
+                                aria-labelledby="panelsStayOpen-headingOne">
+                                <div class="accordion-body">
+                                    <div class="sidebar-dropdown list-unstyled collapse show" id="types9"
+                                        style="position: relative;">
+                                        <div class="marbot-15">
+                                            <div class="select">
+                                                <select class="form-select" id="handle_type" v-model="handle_type">
+                                                    <option v-for="(txt, idx) in handle_type_list" class="option" :value="idx" v-show="idx!=3 || role<3">((txt))</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <p class="marbot-5 font-15">接洽紀錄 </p>
+                                        <div>
+                                            <textarea class="form-control" placeholder="輸入內容" id="floatingTextarea"
+                                                v-model="memo"></textarea>
+                                        </div>
+                                        <button type="button" class="btn btn-primary w-100 my-2"
+                                            @click="contactRecord()">確認</button>
+                                        <div class="list-group">
+                                            <p class="list-group-item list-group-item-action fw-light mb-0 mt-3" aria-current="true">歷程</a>
+                                            <div>
+                                                <a class="list-group-item list-group-item-action"
+                                                    v-for="data in detailInfo[showTel]?.history">
+                                                    <p class="p-0 m-0 smalltext font-15 fw-light"
+                                                        v-for="line in data.split('\n')"
+                                                        style="letter-spacing: 0px; line-height: 1.2rem; word-break: break-all; cursor: text;">
+                                                        (( line ))</p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 中間內容 -->
+                <div class="scrollbar w-100" id="style-1">
+                    <table class="table table-striped overflow-scroll overflow:scroll leftbor">
+                        <ul class="nav nav-tabs" style="overflow-x: auto; width: max-content;">
+                            <li v-for="(person, personIdx) in detailInfo[showTel]?.persons">
+                                <a :id="'personBtn' + personIdx" class="nav-link fs-6"
+                                    :class="personIdx==0?'show active':''" href="#" data-bs-toggle="tab"
+                                    :data-bs-target="'#person' + personIdx">((
+                                    person.user_info?.name
+                                    || "未知名稱" ))</a>
+                            </li>
+                        </ul>
+                    </table>
+                </div>
+                
+                <div class="tab-content">
+                    <div v-for="(person, personIdx) in detailInfo[showTel]?.persons" :id="'person' + personIdx"
+                        class="tab-pane fade" :class="personIdx==0?'show active':''"
+                        style="background-color: #fff; padding: 17px;">
+
+                        <p class="font-16 fw-normal" style="margin-bottom: 7px;">客戶資訊</p>
+                        <div class="scrollbar w-100" id="style-1">
+                            <table class="table overflow-scroll overflow:scroll leftbor">
+                                <tbody>
+                                    <tr claaa="fw-light">
+                                        <th scope="row" class="table-active w-md text-nowrap fw-light">身分證字號</th>
+                                        <td class="text-nowrap w-md">(( person?.user_info?.uid ))</td>
+                                        <th scope="row" class="table-active w-sm text-nowrap fw-light">性別</th>
+                                        <td class="text-nowrap w-sm">(( person?.user_info?.gender ))</td>
+                                        <th scope="row" class="table-active w-sm text-nowrap fw-light">市話</th>
+                                        <td class="text-nowrap w-md">(( person?.user_info?.phone ))</td>
+                                        <th scope="row" class="table-active w-md text-nowrap fw-light">戶籍地址</th>
+                                        <td class="text-nowrap">(( person?.user_info?.addr ))</td>
+                                    </tr>
+                                    <tr claaa="fw-light">
+                                        <th scope="row" class="table-active text-nowrap fw-light">行動電話</th>
+                                        <td class="text-nowrap">(( person?.user_info?.cell_phone ))</td>
+                                        <th scope="row" class="table-active text-nowrap fw-light">生日</th>
+                                        <td class="text-nowrap">(( person?.user_info?.bday ))</td>
+                                        <th scope="row" class="table-active text-nowrap fw-light">國籍</th>
+                                        <td class="text-nowrap">(( person?.user_info?.uid_tag ))</td>
+                                        <th scope="row" class="table-active text-nowrap fw-light">現居地址</th>
+                                        <td class="text-nowrap"> (( person?.user_info?.address_current ))</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <div class="container-fluid p-0 search-list" id="main_result">
+                            <div class="my-3">
+                                <p class="font-16 fw-normal my-2">土地</p>
+                                <div class="scrollbar w-100" id="style-1">
+                                    <table class="table table-striped overflow-scroll overflow:scroll leftbor">
+                                        <thead>
+                                            <tr claaa="fw-light">
+                                                <th scope="col" class="text-nowrap w-md fw-light">縣市區域</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">地號</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">登記次序</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">登記日期</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">登記原因</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">權力範圍</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">持分坪數</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">公告現值 (元)</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">持分現值 (元)</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">他項權利</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="land in person?.land">
+                                                <th data="縣市區域" scope="row" class="text-nowrap">(( (land?.city_name
+                                                    || '') +
+                                                    (land?.area_name || '') + (land?.region_name || '') ))</th>
+                                                <td data="地號" class="text-nowrap">(( land?.lno ))</td>
+                                                <td data="登記次序" class="text-nowrap">(( land?.regno ))</td>
+                                                <td data="登記日期" class="text-nowrap">(( land?.reg_date_str ))</td>
+                                                <th data="登記原因" scope="row" class="text-nowrap">((
+                                                    land?.reg_reason_str ))</th>
+                                                <td data="權力範圍" class="text-nowrap">(( land?.right_str ))</td>
+                                                <td data="持分坪數" class="text-nowrap">(( land?.shared_size ))</td>
+                                                <td data="公告現值" class="text-nowrap">(( land?.present_value?.format()
+                                                    ))</td>
+                                                <th data="持分現值" scope="row" class="text-nowrap">
+                                                    (((((land?.shared_size) * 3.30579) *
+                                                    land?.present_value)?.chUnit(1, 2) ))</th>
+                                                <td data="他項權利" class="text-nowrap"><span v-for="line in land?.owner_data">((line))</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="my-3">
+                                <p class="font-16 fw-normal my-2">建物</p>
+                                <div class="scrollbar w-100" id="style-1">
+                                    <table class="table table-striped overflow-scroll overflow:scroll leftbor">
+                                        <thead>
+                                            <tr claaa="fw-light">
+                                                <th scope="col" class="text-nowrap w-sm fw-light">門牌</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">登記次序</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">登記原因</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">登記日期</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">總面積</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">主建坪數</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">附屬坪數</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">公設坪數</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">車位坪數</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">總樓高</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">他項權利</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">限制登記</th>
+                                                <th scope="col" class="text-nowrap w-sm fw-light">縣市區域建號</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="build in person?.build">
+                                                <td data="門牌" scope="row" class="text-nowrap w-md">(( (build?.city
+                                                    || '') +
+                                                    (build?.district || '') + (build?.houseNumber || '') +
+                                                    (build?.buildName ? (' (' + build?.buildName + ')') : '') ))
+                                                </td>
+                                                <td data="登記次序" class="text-nowrap w-sm">(( build?.regno ))</td>
+                                                <td data="登記原因" class="text-nowrap w-sm">(( build?.reg_reason_str ))
+                                                </td>
+                                                <td data="登記日期" scope="row" class="text-nowrap w-md">((
+                                                    build?.reg_date_str ))</td>
+                                                <td data="總面積" class="text-nowrap w-sm">(( build?.totalArea ))</td>
+                                                <td data="主建坪數" class="text-nowrap w-sm">(( build?.masterArea ))
+                                                </td>
+                                                <td data="附屬坪數" class="text-nowrap w-sm">(( build?.slaveArea ))</td>
+                                                <td data="公設坪數" scope="row" class="text-nowrap w-sm">((
+                                                    build?.publicArea ))</td>
+                                                <td data="車位坪數" class="text-nowrap w-sm">(( build?.carArea ))</td>
+                                                <td data="總樓高" class="text-nowrap w-sm">(( build?.floorNum ))</td>
+                                                <td data="他項權利" class="text-nowrap"><span v-for="line in build?.otherAuthority">((line))</span></td>
+                                                <td data="限制登記" class="text-nowrap w-md">(( build?.ownershipMark ))</td>
+                                                <td data="縣市區域建號" class="text-nowrap w-md">(( (build?.city || '') +
+                                                    (build?.district || '') + (build?.segment || '') + ' ' +
+                                                    (build?.buildNum || '') ))</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="my-3">
+                                <p class="font-16 fw-normal my-2">動產擔保</p>
+                                <div class="accordion accordion-flush mb-1" id="accordionFlushExample">
+                                    <div class="my-3">
+                                        <h2 class="accordion-header" id="flush-headingOne">
+                                            <div class="scrollbar w-100" id="style-1">
+                                                <table class="table table-striped overflow-scroll overflow:scroll leftbor">
+                                                    <thead>
+                                                        <tr claaa="fw-light">
+                                                            <th scope="col" class="text-nowrap w-sm fw-light">車牌</th>
+                                                            <!-- <th scope="col" class="text-nowrap w-sm fw-light">債務人</th> -->
+                                                            <th scope="col" class="text-nowrap w-sm fw-light">抵押權人</th>
+                                                            <th scope="col" class="text-nowrap w-sm fw-light">擔保債權金額</th>
+                                                            <th scope="col" class="text-nowrap w-sm fw-light">契約起始</th>
+                                                            <th scope="col" class="text-nowrap w-sm fw-light">契約終止</th>
+                                                            <!-- <th scope="col" class="text-nowrap w-sm fw-light">抵押權人</th>
+                                                            <th scope="col" class="text-nowrap w-sm fw-light">所有人</th> -->
+                                                            <th scope="col" class="text-nowrap w-sm fw-light">動產明細項數</th>
+                                                            <th scope="col" class="text-nowrap w-sm fw-light">是否最高限額</th>
+                                                            <th scope="col" class="text-nowrap w-sm fw-light">是否為浮動擔保</th>
+                                                            
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr v-for="(car, carIdx) in person.Property">
+                                                            <th scope="row" class="text-nowrap">(( car?.license_plate ))</th>
+                                                            <!-- <td class="text-nowrap">(( car?.debtor ))</td> -->
+                                                            <td class="text-nowrap">(( car?.mortgagee_data?.name ))</td>
+                                                            <th scope="row" class="text-nowrap">(( car?.secured_debt ))</th>
+                                                            <td class="text-nowrap">(( car?.contract_start ))</td>
+                                                            <td class="text-nowrap">(( car?.contract_end ))</td>
+                                                            <!-- <td class="text-nowrap">(( car?.mortgagee ))</td>
+                                                            <td class="text-nowrap">(( car?.owner ))</td> -->
+                                                            <td class="text-nowrap">(( car?.chattel_mortgage_data?.property_detail ))</td>
+                                                            <td class="text-nowrap">(( car?.chattel_mortgage_data?.is_maximum ))</td>
+                                                            <td class="text-nowrap">(( car?.chattel_mortgage_data?.is_floating ))</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="getDetailing" class="loading">Loading&#8230;</div>
+                    <div class="middlesvg" v-else-if="!detailInfo[showTel]?.persons?.length">
+                        <svg width="266" height="260" viewBox="0 0 266 260" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_269_8341)">
+                                <path
+                                    d="M168.868 58.4732H97.1923C95.5589 58.4752 93.993 59.1258 92.8381 60.2823C91.6831 61.4388 91.0334 63.0068 91.0314 64.6424V224.157L90.21 224.408L72.6268 229.8C71.7935 230.054 70.8934 229.967 70.1242 229.558C69.3549 229.148 68.7794 228.45 68.5238 227.616L16.222 56.5443C15.9675 55.7098 16.0543 54.8083 16.4632 54.0379C16.8722 53.2675 17.5699 52.6912 18.403 52.4356L45.4986 44.1278L124.05 20.0515L151.145 11.7436C151.557 11.6166 151.991 11.5722 152.42 11.613C152.85 11.6538 153.267 11.779 153.648 11.9814C154.029 12.1839 154.367 12.4596 154.641 12.7929C154.916 13.1261 155.122 13.5103 155.248 13.9234L168.617 57.6506L168.868 58.4732Z"
+                                    fill="#F2F2F2" />
+                                <path
+                                    d="M184.508 57.6505L168.395 4.94921C168.127 4.07111 167.689 3.25451 167.106 2.54607C166.522 1.83763 165.805 1.25124 164.996 0.820411C164.186 0.389579 163.299 0.122742 162.386 0.035161C161.474 -0.0524204 160.552 0.040969 159.676 0.309983L121.581 11.9862L43.0342 36.0666L4.93954 47.7469C3.16987 48.2911 1.68809 49.5161 0.819465 51.1531C-0.0491597 52.7901 -0.233668 54.7053 0.306448 56.4784L55.3764 236.59C55.8152 238.021 56.7005 239.274 57.9025 240.164C59.1044 241.055 60.5597 241.536 62.0549 241.538C62.7469 241.538 63.435 241.434 64.0961 241.229L90.21 233.226L91.0314 232.971V232.111L90.21 232.362L63.8538 240.444C62.2918 240.92 60.6046 240.757 59.1624 239.99C57.7203 239.223 56.6409 237.914 56.161 236.351L1.09521 56.2358C0.857435 55.4613 0.774565 54.6474 0.85134 53.8409C0.928115 53.0343 1.16302 52.2508 1.54262 51.5352C1.92222 50.8197 2.43906 50.1861 3.06352 49.6709C3.68799 49.1556 4.40781 48.7688 5.18179 48.5325L43.2765 36.8522L121.824 12.7759L159.918 1.09553C160.505 0.916134 161.116 0.824661 161.729 0.824089C163.047 0.82705 164.328 1.2523 165.387 2.03754C166.445 2.82278 167.225 3.92675 167.611 5.18776L183.65 57.6506L183.904 58.4731H184.759L184.508 57.6505Z"
+                                    fill="#3F3D56" />
+                                <path
+                                    d="M50.388 52.5701C49.5964 52.5695 48.8258 52.3149 48.1893 51.8437C47.5527 51.3724 47.0838 50.7093 46.8512 49.9516L41.5609 32.6483C41.4187 32.1835 41.3694 31.6952 41.4157 31.2114C41.462 30.7275 41.6031 30.2575 41.8308 29.8282C42.0586 29.3989 42.3686 29.0187 42.743 28.7094C43.1175 28.4001 43.5492 28.1677 44.0134 28.0254L116.276 5.87239C117.213 5.58594 118.226 5.68364 119.091 6.14402C119.957 6.6044 120.605 7.38987 120.893 8.32801L126.183 25.6315C126.469 26.5702 126.371 27.5841 125.911 28.4508C125.452 29.3175 124.667 29.9662 123.731 30.2545L51.468 52.4076C51.1181 52.5151 50.7541 52.5699 50.388 52.5701V52.5701Z"
+                                    fill="#6C63FF" />
+                                <path
+                                    d="M78.1007 18.4889C82.6374 18.4889 86.3152 14.8062 86.3152 10.2633C86.3152 5.72044 82.6374 2.03772 78.1007 2.03772C73.5639 2.03772 69.8862 5.72044 69.8862 10.2633C69.8862 14.8062 73.5639 18.4889 78.1007 18.4889Z"
+                                    fill="#6C63FF" />
+                                <path
+                                    d="M78.1007 15.4721C80.9735 15.4721 83.3024 13.1401 83.3024 10.2634C83.3024 7.3867 80.9735 5.05469 78.1007 5.05469C75.2279 5.05469 72.899 7.3867 72.899 10.2634C72.899 13.1401 75.2279 15.4721 78.1007 15.4721Z"
+                                    fill="white" />
+                                <path
+                                    d="M247.518 239.436H108.693C107.767 239.435 106.88 239.066 106.225 238.411C105.571 237.756 105.203 236.867 105.202 235.94V69.3721C105.203 68.4452 105.571 67.5567 106.225 66.9013C106.88 66.2459 107.767 65.8773 108.693 65.8762H247.518C248.443 65.8773 249.33 66.2459 249.985 66.9013C250.639 67.5567 251.008 68.4453 251.009 69.3721V235.94C251.008 236.867 250.639 237.756 249.985 238.411C249.33 239.066 248.443 239.435 247.518 239.436V239.436Z"
+                                    fill="#E6E6E6" />
+                                <path
+                                    d="M183.65 57.6506H97.1923C95.3413 57.6533 93.5668 58.3907 92.2579 59.7014C90.9491 61.012 90.2126 62.7889 90.21 64.6424V232.362L91.0314 232.111V64.6424C91.0334 63.0068 91.6831 61.4388 92.8381 60.2823C93.993 59.1258 95.5589 58.4752 97.1923 58.4732H183.904L183.65 57.6506ZM259.018 57.6506H97.1923C95.3413 57.6533 93.5668 58.3907 92.2579 59.7014C90.9491 61.012 90.2126 62.7889 90.21 64.6424V253.008C90.2126 254.862 90.9491 256.639 92.2579 257.949C93.5668 259.26 95.3413 259.997 97.1923 260H259.018C260.869 259.997 262.643 259.26 263.952 257.949C265.261 256.639 265.997 254.862 266 253.008V64.6424C265.997 62.7889 265.261 61.012 263.952 59.7014C262.643 58.3907 260.869 57.6533 259.018 57.6506V57.6506ZM265.179 253.008C265.177 254.644 264.527 256.212 263.372 257.368C262.217 258.525 260.651 259.175 259.018 259.177H97.1923C95.5589 259.175 93.993 258.525 92.8381 257.368C91.6831 256.212 91.0334 254.644 91.0314 253.008V64.6424C91.0334 63.0068 91.6831 61.4388 92.8381 60.2823C93.993 59.1258 95.5589 58.4752 97.1923 58.4732H259.018C260.651 58.4752 262.217 59.1258 263.372 60.2823C264.527 61.4388 265.177 63.0068 265.179 64.6424V253.008Z"
+                                    fill="#3F3D56" />
+                                <path
+                                    d="M215.892 75.7469H140.318C139.338 75.7458 138.399 75.3554 137.706 74.6615C137.013 73.9676 136.623 73.0267 136.622 72.0454V53.9491C136.623 52.9677 137.013 52.0269 137.706 51.3329C138.399 50.639 139.338 50.2487 140.318 50.2476H215.892C216.872 50.2487 217.811 50.639 218.504 51.3329C219.197 52.0269 219.587 52.9677 219.588 53.9491V72.0454C219.587 73.0267 219.197 73.9676 218.504 74.6615C217.811 75.3554 216.872 75.7458 215.892 75.7469V75.7469Z"
+                                    fill="#6C63FF" />
+                                <path
+                                    d="M178.105 51.4814C182.642 51.4814 186.319 47.7987 186.319 43.2559C186.319 38.713 182.642 35.0303 178.105 35.0303C173.568 35.0303 169.891 38.713 169.891 43.2559C169.891 47.7987 173.568 51.4814 178.105 51.4814Z"
+                                    fill="#6C63FF" />
+                                <path
+                                    d="M178.105 48.2659C180.868 48.2659 183.108 46.0228 183.108 43.2558C183.108 40.4887 180.868 38.2456 178.105 38.2456C175.342 38.2456 173.102 40.4887 173.102 43.2558C173.102 46.0228 175.342 48.2659 178.105 48.2659Z"
+                                    fill="white" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_269_8341">
+                                    <rect width="266" height="260" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                        <h4 style="margin: 43px 0px 0px 91px; z-index: 1; color: #BDBDBD;">無資料</h4>
+                    </div>
+                </div>
+            </main>
+            <!-- <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row text-muted">
+                        <div class="col-12 text-center">
+                            <p class="mb-0">
+                                <a href="https://www.yeshome.net.tw/" class="text-muted">
+                                    <strong>yeshome</strong>
+                                </a> ©
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </footer> -->
+        </div>
+        <button class="btn btn-shodow offcanvasRight" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+            <i class="fa-solid fa-angles-left"></i>
+        </button>
+    </div>
+    {% endblock %}
+    {% block script %}
+    <script>
+        const baseapp = Vue.createApp({
+            delimiters: ['((', '))'],
+            data() {
+                return {
+                    config: {
+                        ip: "",
+                        port: "",
+                        ola_extn: "", // 7003
+                        username: `{{ user.username }}`.split(".").slice(1).join(""), 
+                        ola_account: "", // JS003
+                        password: "", // 111111
+                    },
+                    connect_status: 0,
+                    transfer_out_type_list: ["請選擇", "有意願購買，轉主管", "加入待追蹤名單", "放棄，電訪三次找不到人", "放棄，無意願購買"],
+                    handle_type_list: ["請選擇", "聯繫", "更新進度", "結案"],
+
+                    telRecord: [], // 已撥打
+                    follow: [], // 待追蹤
+                    endcase: [], // 結案
+
+                    detailInfo: {}, // phone number => detail (right)
+                    nowTel: "", // phone number
+                    showTel: "", // phone number
+                    personSelect: 0,
+
+                    getDetailing: 0,
+                    manual_num: "",
+
+                    tag_list: "",
+                    transfer_out_type: 0,
+                    handle_type: 0,
+                    memo: "",
+
+                    tagList: [],
+                    keytag: {},
+                    keyword: "",
+                }
+            },
+            methods: {
+                logout() {
+                    new HTTPreq("/i_search/logout/", "fd").geta().then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        if (res.status == "OK") {
+                            window.location.href = "/";
+                        }
+                    });
+                },
+                // vm.getDetail("iaa14jDTvGfkHOzgSj49cw==")
+                getDetail(pNum, is_call = 0) {
+                    var T = this;
+                    this.getDetailing = 1;
+                    if (pNum.length != 24) pNum = this.AESencrypt(pNum);
+                    new HTTPreq("/i_search/get_record_info/", "fd").posta({ ptoken: pNum, is_call: is_call, sip_ext: this.config.ola_extn }).then(rcv => {
+                        T.getDetailing = 0;
+                        var res = supfnc.toJSON(rcv.result);
+                        if(res.status == "OK"){
+                            T.showTel = pNum;
+                            T.detailInfo[pNum] = res.data;
+
+                            T.tag_list = res.data.tag?.join(", ");
+                            T.transfer_out_type = res.data.transfer_out_type;
+                            T.handle_type = res.data.handle_type;
+                            T.memo = "";
+
+                            T.getHistory();
+                            Vue.nextTick(() => { document.getElementById("personBtn0")?.click(); });
+                        }
+                        else Swal.fire(res.msg, "", "error");
+                    });
+                },
+                getHistory() {
+                    var T = this;
+                    new HTTPreq("/i_search/get_tirecord/", "fd").geta().then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        T.tagList = [];
+                        [T.endcase, T.follow, T.telRecord] = res.data.reduce((a, e) => {
+                            for(var i in e.tag){
+                                if(!T.tagList.includes(e.tag[i])) T.tagList.push(e.tag[i]);
+                            }
+
+                            if (e.handle_type == 3) a[0].push(e);
+                            else if (e.transfer_out_type == 1) a[1].push(e);
+                            else if (e.transfer_out_type == 2) a[1].push(e);
+                            else a[2].push(e);
+                            return a;
+                        }, [[], [], []]);
+                    });
+                },
+                websocket_connect() {
+                    var websocket_url = `ws://${this.config.ip}:${this.config.port}/ola_socket`;
+                    ola.connect(websocket_url);
+                    ola.onConnect = this.onConnect;
+                    ola.onMessage = this.onMessage;
+                },
+                onConnect() {
+                    ola._extn = this.config.ola_extn;
+                    ola.subscribe('ola.agent.' + this.config.ola_extn);
+                    ola.subscribe('ola.caller.' + this.config.ola_extn);
+                    ola.get_agent_state(this.config.ola_extn);
+                    ola.login([], this.config.ola_extn, {type: "onhook"});
+                },
+                onMessage(evt) {
+                    var rcvData = supfnc.toJSON(evt.data);
+                    // console.log(evt, rcvData, rcvData.state);
+                    if (rcvData.dnis && rcvData.agent_extn == this.config.ola_extn && rcvData.state == "busy") {
+                        // console.log("電話號碼: " + rcvData.dnis);
+
+                        this.nowTel = this.AESencrypt(rcvData.dnis);
+                        this.getDetail(rcvData.dnis, 1);
+                        Swal.fire({
+                            icon: 'warning',
+                            title: "目前偵測到：" + rcvData.dnis.replace(new RegExp("(?<=\\d{4})\\d", "g"), "*"),
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 30000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            },
+                        });
+                    }
+                    else if (rcvData.state == "login") this.nowTel = "";
+                },
+                getInfo() {
+                    var T = this;
+                    var account = this.config.username;
+                    new HTTPreq("/users/get_user_ip/", "fd").posta({ account: account }).then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        if (res.status == "OK") {
+                            [T.config.ip, T.config.port] = (res.data.ccsi || "61.219.170.179:29003").split(":");
+                            T.config.ola_extn = res.data.sip_ext;
+                            T.config.ola_account = res.data.sip_id;
+                            T.websocket_connect();
+                        }
+                    });
+                },
+                AESencrypt(text) {
+                    // < script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></ script >
+                    // https://stackoverflow.com/questions/72570359/cryptojs-javascript-aes-128-ecb-encrypt-decrypt
+                    var key = 'WJ5HdW2Ns45F9s6M';
+
+                    text = CryptoJS.enc.Utf8.parse(text);
+                    key = CryptoJS.enc.Utf8.parse(key);
+
+                    return CryptoJS.AES.encrypt(text, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.ZeroPadding }).toString();
+                },
+                AESdecrypt(encrypted) {
+                    var key = 'WJ5HdW2Ns45F9s6M';
+                    key = CryptoJS.enc.Utf8.parse(key);
+
+                    return CryptoJS.AES.decrypt(encrypted, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.ZeroPadding }).toString(CryptoJS.enc.Utf8);
+                },
+                foldLeft() {
+                    var status = document.getElementById("leftCtx").classList.toggle("fa-angle-left");
+                    var style = document.getElementById("sidebar").style;
+                    status ? (style.minWidth = "0", style.maxWidth = "0") : (style.minWidth = "", style.maxWidth = "");
+                },
+                splitrm(txt, symbol = ",") {
+                    if (!txt.length) return [];
+                    return txt.replace(new RegExp("\\s", "g"), "").split(symbol).reduce((a, e) => { if (e) a.push(e); return a; }, []);
+                },
+                contactRecord() {
+                    var T = this;
+                    var tag_list = this.splitrm(this.tag_list);
+                    new HTTPreq("/i_search/add_remark/", "fd").posta({ ptoken: this.showTel, tag_list: tag_list, transfer_out_type: this.transfer_out_type, handle_type: this.handle_type, memo: this.memo }).then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        if (res.status == "OK") {
+                            T.getHistory();
+                            T.getDetail(T.showTel);
+                        }
+                        Swal.fire(res.msg, "", "success");
+                    });
+                },
+
+                filterFnc(a, e){
+                    var matchWord, matchTag;
+
+                    // this.keyword.split(new RegExp("\\s,"));
+                    var keyword = this.keyword.replace(/([\*\.\+\?\\])/g, "\\$1");
+                    if(!keyword.length) matchWord = 1;
+                    else{
+                        for(var i in e.name_list) {
+                            if(e.name_list[i].match(keyword)){
+                                matchWord = 1;
+                                break;
+                            }
+                        }
+                        if(!matchWord && e.phone.match(keyword)) matchWord = 1;
+                    }
+
+                    if(!this.keytag.reduce((a, e)=>{return a||e}, 0)) matchTag = 1;
+                    else{
+                        for(var j in this.keytag){
+                            if(!this.keytag[j]) continue;
+                            if(e.tag.includes(j)){
+                                matchTag = 1;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(matchWord && matchTag) a.push(e);
+                    return a;
+                },
+                counterFnc(a, e){
+                    return e.read ? a : a+1;
+                }
+            },
+            async mounted () {
+                this.getInfo();
+                this.getHistory();
+                this.role = JSON.parse((await new HTTPreq("/i_search/get_logo/").get()).result).role;
+            },
+            created() { },
+            updated() { },
+            beforeUpdate() { },
+            watch:{
+                connect_status(nV, oV){
+                    nV ? ola.go_ready() : ola.go_break();
+                }
+            },
+            computed:{
+                telRecord_filtered(){
+                    return this.telRecord.reduce(this.filterFnc, []);
+                },
+                follow_filtered(){
+                    return this.follow.reduce(this.filterFnc, []);
+                },
+                endcase_filtered(){
+                    return this.endcase.reduce(this.filterFnc, []);
+                },
+                telRecord_filtered_notread(){
+                    return this.telRecord.reduce(this.counterFnc, 0);
+                },
+                follow_filtered_notread(){
+                    return this.follow.reduce(this.counterFnc, 0);
+                },
+                endcase_filtered_notread(){
+                    return this.endcase.reduce(this.counterFnc, 0);
+                },
+            },
+        });
+        var log = console.log;
+/*
+                                                                                        example
+                                                                                        {
+                                                                                            "event_type": "agent_state",
+                                                                                            "state": "logout",
+                                                                                            "old_state": "busy",
+                                                                                            "call_accept": "95ddbf5a-90b6-11ed-a3d7-31c2350177a7",
+                                                                                            "other_accept": "87f18c1e-90b6-11ed-a369-31c2350177a7",
+                                                                                            "agent_id": "7003",
+                                                                                            "agent_extn": "7003",
+                                                                                            "agent_name": "7003",
+                                                                                            "queue_id": [
+                                                                                                "10033"
+                                                                                            ],
+                                                                                            "skill": 0,
+                                                                                            "calls_queued": 0,
+                                                                                            "max_queued_time": 0,
+                                                                                            "call_id": "",
+                                                                                            "call_type": "",
+                                                                                            "ani": "0987246427",
+                                                                                            "dnis": "0987246427",
+                                                                                            "this_type": "agent",
+                                                                                            "this_dn": "7003",
+                                                                                            "other_type": "",
+                                                                                            "other_dn": "0987246427",
+                                                                                            "third_type": "",
+                                                                                            "third_dn": "",
+                                                                                            "timestamp": 1673334940263,
+                                                                                            "private_data": "ring",
+                                                                                            "call_direction": "inbound",
+                                                                                            "other_answered": false,
+                                                                                            "dtmf": "undefined",
+                                                                                            "dtmf_his": "_undef_",
+                                                                                            "gateway": "0702198769",
+                                                                                            "app_data": {
+                                                                                                "dtmf_his": "_undef_",
+                                                                                                "call_direction": "inbound",
+                                                                                                "caller_source": "erlang",
+                                                                                                "caller_uuid": "87f18c1e-90b6-11ed-a369-31c2350177a7",
+                                                                                                "cid_name": "Outbound Call",
+                                                                                                "cid_number": "0987246427",
+                                                                                                "dest_number": "0987246427",
+                                                                                                "created_at": "2023-01-10 15:15:38",
+                                                                                                "group_call": "true",
+                                                                                                "batch_accept": "367"
+                                                                                            }
+                                                                                        }
+                                                                                        */
+
+
+// getToken
+// new HTTPreq(`http://${ ip }:${ port }/api/login? username=${ username }&password=${ password }`).geta().then(rcv => {
+//     console.log(rcv.Xreq.getAllResponseHeaders())
+// });
+    </script>
+    {% endblock %}
+</body>
+</html>

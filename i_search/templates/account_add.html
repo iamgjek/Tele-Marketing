@@ -1,0 +1,318 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/5e2cac8506.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+    {% block head %}
+    <title>新增帳號</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background-color: #e7e7e7;
+            font-size: .925rem;
+        }
+    
+        .wrapper {
+            min-height: 100%;
+            margin-bottom: -50px;
+        }
+    
+        .content {
+            padding-bottom: 50px;
+        }
+    
+        .footer {
+            height: 60px;
+            background-color: #495057;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            ;
+        }
+    
+        .text-muted {
+            color: #f2efeaa3 !important;
+        }
+    
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e7e7e7;
+            font-size: .925rem;
+        }
+    
+        .sidebar {
+            background-color: #ffffff;
+            width: 20%;
+            transition: all .3s ease-in-out;
+            transform: translateX(0);
+            z-index: 9999999
+        }
+    
+        .sidebar .close-aside {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            cursor: pointer;
+            color: #EEE;
+        }
+    
+        .sidebar .sidebar-header {
+            border-bottom: 1px solid #dcdcdc;
+            margin-top: -3px;
+        }
+    
+        .sidebar .sidebar-header h5 a {
+            color: var(--dk-gray-300)
+        }
+    
+        .sidebar .sidebar-header p {
+            color: var(--dk-gray-400);
+            font-size: .825rem;
+        }
+    
+        .sidebar>ul>li {
+            padding: .7rem 1.75rem;
+        }
+    
+        .sidebar ul>li>a {
+            color: var(--dk-gray-400);
+            text-decoration: none;
+        }
+    
+        .sidebar ul>li>i {
+            font-size: 18px;
+            margin-right: .7rem;
+            color: var(--dk-gray-500);
+        }
+    
+        .sidebar ul .sidebar-dropdown>li>a {
+            font-size: .85rem;
+            padding: .5rem 0;
+            display: block;
+        }
+    
+        .w-content {
+            width: 80%;
+            float: right;
+        }
+    
+        .tableli td:nth-child(3) {
+            color: #0d6efd;
+        }
+    
+        .leftmenu {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background: #e7e7e7;
+            height: 61px;
+        }
+    
+        .icon-smile {
+            font-size: 25px;
+            color: #ffffff;
+            margin-left: -32px;
+        }
+    
+        .mtop-4 {
+            margin-top: -4px;
+        }
+    
+        .header-container {
+            grid-template-columns: auto 1fr auto;
+            grid-gap: 20px;
+            align-items: center;
+        }
+    
+        .page-link {
+            position: relative;
+            display: block;
+            color: #7d7d7d;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #e7e7e7;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+        .img-fluid {
+            height: 60px;
+        }
+    </style>
+    {% endblock %}
+</head>
+
+
+<body>
+    {% block body %}
+    <div class="px-2 mx-1 d-flex flex-grow-1">
+        <aside class="sidebar overflow-auto h-100 float-left"
+            id="show-side-navigation1">
+            <i class="uil-bars close-aside d-md-none d-lg-none" data-close="show-side-navigation1"></i>
+            <hr class="mtop-4">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a class="text-decoration-none" href="/i_search/account_manage/"><div class="w-100">帳號管理</div></a></li>
+                <li class="list-group-item"><a class="text-decoration-none" href="/i_search/account_download/"><div class="w-100">清單下載</div></a></li>
+            </ul>
+        </aside>
+        <main class="flex-grow-1">
+            <section class="shadow-sm bg-body rounded">
+                <div class="scrollbar" id="style-1">
+                    <div class="header-container">
+                        <h2 class="h4 fw-bold pl-3 pt-3">新增帳號</h2>
+                        <div class="container w-100">
+                            <div class="row my-3">
+                                <div class="col">
+                                    <label for="basic-url" class="form-label">Sub-domain</label>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" placeholder="" v-model="dataForm.sub_domain">
+                                        <span class="input-group-text">.telem.com.tw</span>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <label for="basic-url" class="form-label">上傳logo</label>
+                                    <div class="input-group mb-3">
+                                        <input type="file" class="form-control" id="logoFile">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="SIP_IP" class="form-label">SIP IP</label>
+                                    <input type="text" class="form-control" placeholder="請輸入IP:port" v-model="dataForm.ccsi">
+                                </div>
+                                <div class="col">
+                                    <label for="basic-url" class="form-label">開放資料</label>
+                                    <div class="input-group">
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">請選擇</button>
+                                        <ul class="dropdown-menu">
+                                            <li v-for="(item, idx) in open_dataList">
+                                                <a class="dropdown-item" href="#" @click.stop="dataForm.open_data[idx] ^= 1">
+                                                    <input type="checkbox" :checked="dataForm.open_data[idx]">
+                                                    <label class="ms-2">(( item ))</label>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-4">
+                    <div class="container">
+                        <div class="row my-4">
+                            <div class="col">
+                                <label for="account_number" class="form-label">帳號</label>
+                                <input type="text" class="form-control" placeholder="name@example.com" v-model="dataForm.account">
+                            </div>
+                            <div class="col"></div>
+                        </div>
+                        <div class="row my-4">
+                            <div class="col">
+                                <label for="password" class="form-label">密碼</label>
+                                <input type="password" class="form-control" v-model="dataForm.password">
+                            </div>
+                            <div class="col">
+                                <label for="check_password" class="form-label">確認密碼</label>
+                                <input type="password" class="form-control" v-model="dataForm.password2">
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <div class="row my-4">
+                            <div class="col">
+                                <label for="company_name" class="form-label">公司名稱</label>
+                                <input type="text" class="form-control" v-model="dataForm.company_name">
+                            </div>
+                            <div class="col">
+                                <label for="Compilation" class="form-label">統編</label>
+                                <input type="text" class="form-control" v-model="dataForm.company_id">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="Contact_person" class="form-label">聯絡人</label>
+                                <input type="text" class="form-control" v-model="dataForm.contact_person">
+                            </div>
+                            <div class="col">
+                                <label for="Telephone" class="form-label">電話</label>
+                                <input type="text" class="form-control" v-model="dataForm.phone">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary my-4" @click="addAccount()">新增</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    {% endblock %}
+
+    {% block script %}
+    <script>
+        const baseapp = Vue.createApp({
+            delimiters: ['((', '))'],
+            data() {
+                return {
+                    dataForm:{
+                        sub_domain: "",
+                        ccsi: "",
+                        open_data: {},
+                        upload_file: "",
+                        account: "",
+                        password: "",
+                        password2: "",
+                        company_name: "",
+                        company_id: "",
+                        sip_pwd: "",
+                        contact_person: "",
+                        phone: "",
+                    },
+                    open_dataList: ["土地", "建物", "動產"],
+                }
+            },
+            methods: {
+                logout(){
+                    new HTTPreq("/i_search/logout/", "fd").geta().then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        if(res.status == "OK"){
+                            window.location.href = "/";
+                        }
+                    });
+                },
+                addAccount(){
+                    var T = this;
+                    if(!this.dataForm.account || !this.dataForm.password ){
+                        Swal.fire("請輸入帳號和密碼", "", "error");
+                        return;
+                    }
+                    if(this.dataForm.password != this.dataForm.password2){
+                        Swal.fire("兩次密碼輸入不一致", "", "error");
+                        return;
+                    }
+                    this.dataForm.upload_file = document.getElementById("logoFile").files?.[0];
+                    new HTTPreq("/users/add_company/", "fd").posta(this.dataForm).then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        Swal.fire(res.msg), "", "success";
+                    });
+                },
+            },
+            mounted(){},
+            created(){},
+            updated(){},
+            beforeUpdate(){},
+        });
+    </script>
+    {% endblock %}
+</body>
+</html>

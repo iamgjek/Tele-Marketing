@@ -1,0 +1,410 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/5e2cac8506.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+    {% block head %}
+    <title>帳號管理</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background-color: #e7e7e7;
+            font-size: .925rem;
+        }
+    
+        .wrapper {
+            min-height: 100%;
+            /*外層高度100%*/
+            margin-bottom: -50px;
+            /*隨footer高度需做調整*/
+        }
+    
+        .content {
+            padding-bottom: 50px;
+            /*避免文字超出瀏覽器時，內容區塊不會和footer打架*/
+        }
+    
+        .footer {
+            height: 60px;
+            /*設定footer本身高度*/
+            background-color: #495057;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            ;
+        }
+    
+        .text-muted {
+            color: #f2efeaa3 !important;
+        }
+    
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e7e7e7;
+            font-size: .925rem;
+        }
+    
+        /** --------------------------------
+     -- Sidebar
+    -------------------------------- */
+        .sidebar {
+            background-color: #ffffff;
+            width: 20%;
+            transition: all .3s ease-in-out;
+            transform: translateX(0);
+            z-index: 9999999
+        }
+    
+        .sidebar .close-aside {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            cursor: pointer;
+            color: #EEE;
+        }
+    
+        .sidebar .sidebar-header {
+            border-bottom: 1px solid #dcdcdc;
+            margin-top: -3px;
+        }
+    
+        .sidebar .sidebar-header h5 a {
+            color: var(--dk-gray-300)
+        }
+    
+        .sidebar .sidebar-header p {
+            color: var(--dk-gray-400);
+            font-size: .825rem;
+        }
+    
+        .sidebar .search .form-control~i {
+            color: #1251ff;
+            right: 40px;
+            top: 22px;
+        }
+    
+        .sidebar>ul>li {
+            padding: .7rem 1.75rem;
+        }
+    
+        .sidebar ul>li>a {
+            color: var(--dk-gray-400);
+            text-decoration: none;
+        }
+    
+        /* Start numbers */
+        .sidebar ul>li>a>.num {
+            line-height: 0;
+            border-radius: 3px;
+            font-size: 14px;
+            padding: 0px 5px
+        }
+    
+        .sidebar ul>li>i {
+            font-size: 18px;
+            margin-right: .7rem;
+            color: var(--dk-gray-500);
+        }
+    
+        .sidebar ul>li.has-dropdown>a:after {
+            content: '\eb3a';
+            font-family: unicons-line;
+            font-size: 1rem;
+            line-height: 1.8;
+            float: right;
+            color: var(--dk-gray-500);
+            transition: all .3s ease-in-out;
+        }
+    
+        .sidebar ul .opened>a:after {
+            transform: rotate(-90deg);
+        }
+    
+        /* Start dropdown menu */
+        .sidebar ul .sidebar-dropdown {
+            padding-top: 10px;
+            padding-left: 30px;
+            display: none;
+        }
+    
+        .sidebar ul .sidebar-dropdown.active {
+            display: block;
+        }
+    
+        .sidebar ul .sidebar-dropdown>li>a {
+            font-size: .85rem;
+            padding: .5rem 0;
+            display: block;
+        }
+    
+        /* End dropdown menu */
+        .show-sidebar {
+            transform: translateX(-270px);
+        }
+    
+        @media (max-width: 767px) {
+            .sidebar ul>li {
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+    
+            .sidebar .search {
+                padding: 10px 0 10px 30px
+            }
+        }
+    
+        .wrapper {
+            min-height: 100%;
+            margin-bottom: -86px;
+        }
+    
+        .w-content {
+            width: 80%;
+            float: right;
+        }
+    
+        .tableli td:nth-child(3) {
+            color: #0d6efd;
+        }
+    
+        .leftmenu {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background: #e7e7e7;
+            height: 61px;
+        }
+    
+        .icon-smile {
+            font-size: 25px;
+            color: #ffffff;
+            margin-left: -32px;
+        }
+    
+        .mtop-4 {
+            margin-top: -4px;
+        }
+    
+        .header-container {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            grid-gap: 20px;
+            align-items: center;
+        }
+    
+        .page-link {
+            position: relative;
+            display: block;
+            color: #7d7d7d;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #e7e7e7;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+        .img-fluid {
+            height: 60px;
+        }
+        table td p {
+            line-height: 1rem;
+            margin-bottom: 8px;
+        }
+    </style>
+    {% endblock %}
+</head>
+
+
+<body>
+    {% block body %}
+    <div class="px-2 mx-1 d-flex flex-grow-1">
+        <aside class="sidebar overflow-auto h-100 float-left"
+            id="show-side-navigation1">
+            <i class="uil-bars close-aside d-md-none d-lg-none" data-close="show-side-navigation1"></i>
+            <hr class="mtop-4">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a class="text-decoration-none" href="/i_search/account_manage/"><div class="w-100">帳號管理</div></a></li>
+                <li class="list-group-item"><a class="text-decoration-none" href="/i_search/account_download/"><div class="w-100">清單下載</div></a></li>
+            </ul>
+        </aside>
+        <main class="flex-grow-1">
+            <section class="shadow-sm bg-body rounded">
+                <div class="scrollbar p-3" id="style-1">
+                    <div class="header-container my-2">
+                        <h2 class="h4 fw-bold">清單下載</h2>
+                        <div class="extra-buttons text-right">
+                            <button id="reset-sort" class="btn btn-sm btn-ligth" style="display: none;">
+                                <span class="fas fa-sync fa-sm mr-2" aria-hidden="true"></span>Reset sort order
+                            </button>
+                        </div>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Sub-domain</th>
+                                <th>搜尋條件</th>
+                                <th>時間</th>
+                                <th>動作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(row, rowIdx) in searchResBoxC" class="tableli">
+                                <td>(( (nowPage-1) * onepageNum + rowIdx + 1 ))</td>
+                                <td>(( row.sub_domain ))</td>
+                                <td v-html="row.search_condition"></td>
+                                <td>(( row.datetime ))</td>
+                                <td style="padding:3px;">
+                                    <button class="btn btn-secondary btn-sm" @click="downloadFile(row.filename)">下載</button>
+                                </td>
+                            </tr>
+                            <tr v-if="!searchResBox.length">
+                                <td :colspan="titleOrder.length+2" class="text-center">無資料</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <nav class="m-3" aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item">
+                                <span class="page-link" @click="nowPage--">上一頁</span>
+                            </li>
+                            <li class="page-item" :class="{active:nowPage==startPageBtn+i}" v-for="i in 9..minmax(1,totalPage)" @click="nowPage=startPageBtn+i">
+                                <span class="page-link">(( startPageBtn+i ))</span>
+                            </li>
+                            <li class="page-item">
+                                <span class="page-link" @click="nowPage++">下一頁</span>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </section>
+        </main>
+    </div>
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row text-muted">
+                <div class="col-12 text-center">
+                    <p class="mb-0">
+                    <P href="https://www.yeshome.net.tw/" class="text-muted p-3">
+                        <strong>COPYRIGHT © YesHome</strong>
+                    </P>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    {% endblock %}
+
+    {% block script %}
+    <script>
+        const baseapp = Vue.createApp({
+            delimiters: ['((', '))'],
+            data() {
+                return {
+                    titleOrder: ["sub_domain", "search_condition", "datetime"],
+                    titleTrans: {
+                        sub_domain: "Sub-domain",
+                        search_condition: "搜尋條件",
+                        datetime: "時間",
+                    },
+
+                    searchRes:[],
+                    searchResBox:[],
+                    pageNumList: [5, 10, 20, 50, 100],
+                    onepageNum: 10,
+                    startPageBtn: 0,
+                    nowPage: 0,
+                    totalPage: 1,
+                }
+            },
+            methods: {
+                logout(){
+                    new HTTPreq("/i_search/logout/", "fd").geta().then(rcv => {
+                        var res = supfnc.toJSON(rcv.result);
+                        if(res.status == "OK"){
+                            window.location.href = "/";
+                        }
+                    });
+                },
+                selectPage(nV, oV){
+                    var data;
+                    this.nowPage = nV.minmax(1, this.totalPage);
+                    this.startPageBtn = (this.nowPage-4).minmax(1, Math.max(this.totalPage-8, 1)) - 1;
+                    this.searchResBox.length = 0;
+                    for(var i=0; i<this.onepageNum; i++){
+                        data = this.searchRes[(nV-1) * this.onepageNum + i];
+                        if(!data) break;
+                        this.searchResBox.push(data);
+                    }
+                },
+                getDownloadList(){
+                    var T = this;
+                    this.loading = 1;
+                    new HTTPreq("/i_search/get_download_list/").geta().then(rcv => {
+                        this.loading = 0;
+                        var res = supfnc.toJSON(rcv.result);
+                        this.searchRes = res.data;
+                        T.selectPage(1);
+                    });
+                },
+                downloadFile(fileName){
+                    window.open("/i_search/download/" + fileName);
+                },
+            },
+            mounted(){
+                this.getDownloadList();
+            },
+            created(){},
+            updated(){},
+            beforeUpdate(){},
+            watch:{
+                nowPage:{
+                    handler(nV, oV){
+                        this.selectPage(nV, oV);
+                    }
+                },
+                onepageNum:{
+                    handler(nV, oV){
+                        this.totalPage = Math.ceil(this.searchRes.length / nV);
+                        this.selectPage(this.nowPage, oV);
+                    }
+                },
+            },
+            computed:{
+                searchResBoxC(){
+                    return this.searchResBox.reduce((a,e) => {
+                        var cdn = e.search_condition;
+                        var age_interval = cdn.age_interval.join("，");
+                        var gender = cdn.gender.join("，");
+                        var credits = cdn.credits.join("，");
+                        var rights = cdn.rights.join("，");
+                        var location = cdn.location.reduce((a2, e2) => {a2.push(e2.join("、"));return a2;}, []).join("，");
+
+                        e.search_condition = `
+                            <p class=${ age_interval ? "": "d-none" }>年齡區間：${ age_interval }</p>
+                            <p class=${ gender ? "": "d-none" }>性別：${ gender }</p>
+                            <p class=${ credits ? "": "d-none" }>他項權力：${ credits }</p>
+                            <p class=${ rights ? "": "d-none" }>持分範圍：${ rights }</p>
+                            <p class=${ location ? "": "d-none" }>地區：${ location }</p>
+                        `.replace(new RegExp("\\n+|\\s{2}", "g"), "");
+                        a.push(e);
+                        return a;
+                    }, []);
+                }
+            }
+        });
+    </script>
+    {% endblock %}
+</body>
+</html>
